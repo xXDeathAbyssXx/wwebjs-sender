@@ -344,12 +344,21 @@ exports.reply = function ({ message, embed }) {
       let down_r = "┘";
       let wall = "│";
       let title = embed.title;
-      let lentitle = title.length;
+      let lentitle;
+      if (title === undefined) {
+        lentitle = 0;
+      } else {
+        lentitle = title.length;
+      }
       let description = embed.description;
       let footer = embed.footer;
-      let lenfooter = footer.length;
+      let lenfooter;
+      if (footer === undefined) {
+        lenfooter = 0;
+      } else {
+        lenfooter = footer.length;
+      }
       let timestamp = embed.timestamp;
-
       if (lentitle > 2) {
         title = "\n" + title + "\n" + wall + "────────────────────────" + wall;
       } else {
@@ -418,12 +427,21 @@ exports.send = function ({ client, number, embed, button }) {
           let down_r = "┘";
           let wall = "│";
           let title = embed.title;
-          let lentitle = title.length;
+          let lentitle;
+          if (title === undefined) {
+            lentitle = 0;
+          } else {
+            lentitle = title.length;
+          }
           let description = embed.description;
           let footer = embed.footer;
-          let lenfooter = footer.length;
+          let lenfooter;
+          if (footer === undefined) {
+            lenfooter = 0;
+          } else {
+            lenfooter = footer.length;
+          }
           let timestamp = embed.timestamp;
-
           if (lentitle > 2) {
             title =
               "\n" + title + "\n" + wall + "────────────────────────" + wall;
@@ -483,10 +501,20 @@ exports.send = function ({ client, number, embed, button }) {
             let down_r = "┘";
             let wall = "│";
             let title = embed.title;
-            let lentitle = title.length;
+            let lentitle;
+            if (title === undefined) {
+              lentitle = 0;
+            } else {
+              lentitle = title.length;
+            }
             let description = embed.description;
             let footer = embed.footer;
-            let lenfooter = footer.length;
+            let lenfooter;
+            if (footer === undefined) {
+              lenfooter = 0;
+            } else {
+              lenfooter = footer.length;
+            }
             let timestamp = embed.timestamp;
             if (lentitle > 2) {
               title =
