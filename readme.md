@@ -86,7 +86,7 @@ client.initialize();
 
 ## Usage:
 
-### MessageEmbed
+### `MessageEmbed`
 
 ```js
 let embed = new MessageEmbed() //Call the constructor MessageEmbed
@@ -96,7 +96,7 @@ let embed = new MessageEmbed() //Call the constructor MessageEmbed
   .setTimestamp(); //Set a timestamp for the embed [optional]
 ```
 
-### MessageButton
+### `MessageButton`
 
 ```js
 let button = new MessageButton() //Call the constructor MessageButton
@@ -104,7 +104,7 @@ let button = new MessageButton() //Call the constructor MessageButton
   .setLabel("Label"); //Set a label for the button [required]
 ```
 
-### Reply
+### `Reply`
 
 ```js
 reply({
@@ -113,7 +113,7 @@ reply({
 });
 ```
 
-### Send
+### `Send`
 
 ```js
 send({
@@ -138,9 +138,13 @@ send({
 
 5 - Create a new Pull Request
 
+---
+
 ## License
 
 This project is licensed under the MIT License, see the [LICENSE](https://github.com/xXDeathAbyssXx/wwebjs-sender/blob/main/LICENSE) file for details.
+
+---
 
 ## Contributors
 
@@ -158,3 +162,5 @@ This project is licensed under the MIT License, see the [LICENSE](https://github
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+---
