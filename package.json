@@ -1,0 +1,23 @@
+{
+  "name": "@deathabyss/wwebjs-sender",
+  "version": "1.0.0",
+  "description": "A package to send messages/buttons using constructors with the whatsapp-web.js package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xXDeathAbyssXx/wwebjs-sender.git"
+  },
+  "author": "DeathAbyss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xXDeathAbyssXx/wwebjs-sender/issues"
+  },
+  "homepage": "https://github.com/xXDeathAbyssXx/wwebjs-sender#readme",
+  "dependencies": {
+    "is-phone": "^2.0.0",
+    "whatsapp-web.js": "^1.16.4"
+  }
+}
