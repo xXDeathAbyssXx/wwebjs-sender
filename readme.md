@@ -89,7 +89,7 @@ client.initialize();
 ### MessageEmbed
 
 ```js
-let embed = new WwebjsSender.MessageEmbed() //Call the constructor MessageEmbed
+let embed = new MessageEmbed() //Call the constructor MessageEmbed
   .setTitle("string") //Set a title for the embed [optional]
   .setDescription("string") //Set a description for the embed [required]
   .setFooter("string") //Set a footer for the embed [optional]
