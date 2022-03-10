@@ -331,7 +331,7 @@ exports.MessageButton = function () {
 /**
  * Reply a message with a MessageEmbed string
  * @property {object} [message] The message to reply
- * @property {string} [embed] The embed to reply
+ * @property {object} [embed] The embed to reply
  */
 
 exports.reply = function ({ message, embed }) {
@@ -393,7 +393,7 @@ exports.reply = function ({ message, embed }) {
  * Send a message with buttons or MessageEmbed to a number
  * @property {object} [client] The client to send a message
  * @property {string} [number] The number to send a message
- * @property {string} [embed] The MessageEmbed to send a message
+ * @property {object} [embed] The MessageEmbed to send a message
  * @property {object} [button] The buttons/s to send a message
  */
 exports.send = function ({ client, number, embed, button }) {
