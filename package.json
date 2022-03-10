@@ -1,8 +1,17 @@
 {
   "name": "@deathabyss/wwebjs-sender",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "A package to send messages/buttons using constructors with the whatsapp-web.js package",
-  "keywords": ["sender", "send", "reply", "embed", "whatsapp", "bot", "button", "constructor"],
+  "keywords": [
+    "sender",
+    "send",
+    "reply",
+    "embed",
+    "whatsapp",
+    "bot",
+    "button",
+    "constructor"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
