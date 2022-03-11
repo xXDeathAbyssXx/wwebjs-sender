@@ -103,9 +103,9 @@ client.initialize();
 
 ```js
 let embed = new MessageEmbed() //Call the constructor MessageEmbed
-  .setTitle("string") //Set a title for the embed [optional]
-  .setDescription("string") //Set a description for the embed [required]
-  .setFooter("string") //Set a footer for the embed [optional]
+  .setTitle("Title") //Set a title for the embed [optional]
+  .setDescription("Description") //Set a description for the embed [required]
+  .setFooter("Footer") //Set a footer for the embed [optional]
   .setTimestamp(); //Set a timestamp for the embed [optional]
 ```
 
@@ -113,7 +113,7 @@ let embed = new MessageEmbed() //Call the constructor MessageEmbed
 
 ```js
 let button = new MessageButton() //Call the constructor MessageButton
-  .setCustomId("id") //Set a custom id for the button [optional]
+  .setCustomId("Id") //Set a custom id for the button [optional]
   .setLabel("Label"); //Set a label for the button [required]
 ```
 
