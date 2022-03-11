@@ -1,6 +1,6 @@
 <div align="center">
 
-[![Npm package version](https://badgen.net/npm/v/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![GitHub watchers](https://img.shields.io/github/watchers/xXDeathAbyssXx/wwebjs-sender.svg?style=social&label=Watch&maxAge=2592000)](https://github.com/xXDeathAbyssXx/wwebjs-sender/watchers)
+[![Npm package version](https://badgen.net/npm/v/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![Npm package weekly downloads](https://badgen.net/npm/dw/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![GitHub watchers](https://img.shields.io/github/watchers/xXDeathAbyssXx/wwebjs-sender.svg?style=social&label=Watch&maxAge=2592000)](https://github.com/xXDeathAbyssXx/wwebjs-sender/watchers)
 
 </div>
 
@@ -10,7 +10,14 @@ This package creates embeds and buttons in a very simple way using the [whatsapp
 
 ---
 
-## Installation:
+## 🔗 Links
+
+- [github](https://github.com/xXDeathAbyssXx/wwebjs-sender)
+- [npm](https://www.npmjs.com/package/@deathabyss/wwebjs-sender)
+
+---
+
+## 🚀 Installation:
 
 <table><tr><td colspan="3">
 
@@ -36,7 +43,7 @@ yarn add @deathabyss/wwebjs-sender
 
 ---
 
-## Features:
+## ✨ Features:
 
 - Create embeds in an easy way
 - Create buttons in an easy way
@@ -45,7 +52,7 @@ yarn add @deathabyss/wwebjs-sender
 
 ---
 
-## Example usage:
+## 👀 Example usage:
 
 ```js
 const WwebjsSender = require("@deathabyss/wwebjs-sender");
@@ -90,7 +97,7 @@ client.initialize();
 
 ---
 
-## Usage:
+## 📚 Usage:
 
 ### `MessageEmbed`
 
@@ -132,7 +139,7 @@ send({
 
 ---
 
-## Contributing
+## 📁 Contributing
 
 1 - Fork it (https://github.com/yourname/yourproject/fork)
 
@@ -146,13 +153,7 @@ send({
 
 ---
 
-## License
-
-This project is licensed under the MIT License, see the [LICENSE](https://github.com/xXDeathAbyssXx/wwebjs-sender/blob/main/LICENSE) file for details.
-
----
-
-## Contributors
+## 👥 Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
@@ -168,5 +169,11 @@ This project is licensed under the MIT License, see the [LICENSE](https://github
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+---
+
+## 📖 License
+
+This project is licensed under the MIT License, see the [LICENSE](https://github.com/xXDeathAbyssXx/wwebjs-sender/blob/main/LICENSE) file for details.
 
 ---
