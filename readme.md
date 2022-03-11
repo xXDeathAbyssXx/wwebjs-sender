@@ -76,7 +76,7 @@ client.on("message", (msg) => {
 
     let button2 = new MessageButton().setCustomId("id_2").setLabel("Label");
 
-    await send({
+    send({
       client: client,
       number: from,
       embed: embed,
