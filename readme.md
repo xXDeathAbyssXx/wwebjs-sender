@@ -1,3 +1,9 @@
+<div align="center">
+
+[![Npm package version](https://badgen.net/npm/v/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![Npm package daily downloads](https://badgen.net/npm/dm/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![GitHub watchers](https://img.shields.io/github/watchers/xXDeathAbyssXx/wwebjs-sender.svg?style=social&label=Watch&maxAge=2592000)](https://github.com/xXDeathAbyssXx/wwebjs-sender/watchers)
+
+</div>
+
 This package creates embeds and buttons in a very simple way using the [whatsapp-web.js](https://www.npmjs.com/package/whatsapp-web.js) module for whatsapp.
 
 > NOTE : Internally [whatsapp-web.js](https://www.npmjs.com/package/whatsapp-web.js) is being used to send and receive messages. Though it has been safe as per my testing, I cannot promise that your number will not be blocked by Whatsapp. Also, this project is not affiliated, associated, authorized or endorsed with Whatsapp or any of its subsidiaries or affiliates in any way.
