@@ -83,7 +83,7 @@ client.on("message", (msg) => {
 
     let button2 = new MessageButton().setCustomId("id_2").setLabel("Label");
 
-    send({
+    WwebjsSender.send({
       client: client,
       number: from,
       embed: embed,
