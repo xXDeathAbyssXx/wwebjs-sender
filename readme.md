@@ -70,6 +70,7 @@ client.on("ready", () => {
 
 client.on("message", (msg) => {
   if (msg.body == "!command") {
+    const { from } = msg;
     let embed = new WwebjsSender.MessageEmbed()
       .setTitle("Title")
       .setDescription(
