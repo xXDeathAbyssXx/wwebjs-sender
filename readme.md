@@ -79,9 +79,13 @@ client.on("message", (msg) => {
       .setFooter("Footer")
       .setTimestamp();
 
-    let button1 = new MessageButton().setCustomId("id_1").setLabel("Label");
+    let button1 = new WwebjsSender.MessageButton()
+      .setCustomId("id_1")
+      .setLabel("Label");
 
-    let button2 = new MessageButton().setCustomId("id_2").setLabel("Label");
+    let button2 = new WwebjsSender.MessageButton()
+      .setCustomId("id_2")
+      .setLabel("Label");
 
     WwebjsSender.send({
       client: client,
