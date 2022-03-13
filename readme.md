@@ -121,6 +121,12 @@ client.on("message", (msg) => {
 client.initialize();
 ```
 
+## 👀 Example Result:
+
+<div align="center">
+<img height="400vh" src="https://i.imgur.com/svlQTdu.png">
+</div>
+
 ---
 
 ## 📚 Usage:
