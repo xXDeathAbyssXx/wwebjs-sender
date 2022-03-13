@@ -40,7 +40,7 @@ yarn add @deathabyss/wwebjs-sender
 ```
 
 </p></details></td></tr></table>
-
+<br>
 <table><tr><td colspan="3">
 
 Install the package whatsapp-web.js with npm or yarn
