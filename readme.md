@@ -41,6 +41,28 @@ yarn add @deathabyss/wwebjs-sender
 
 </p></details></td></tr></table>
 
+<table><tr><td colspan="3">
+
+Install the package whatsapp-web.js with npm or yarn
+
+</td></tr><tr><td valign="top">
+
+<details><summary> npm </summary><p>
+
+```bash
+npm i whatsapp-web.js
+```
+
+</p></details></td><td valign="top">
+
+<details><summary> yarn </summary><p>
+
+```bash
+yarn add whatsapp-web.js
+```
+
+</p></details></td></tr></table>
+
 ---
 
 ## ✨ Features:
@@ -72,20 +94,20 @@ client.on("message", (msg) => {
   if (msg.body == "!command") {
     const { from } = msg;
     let embed = new WwebjsSender.MessageEmbed()
-      .setTitle("Title")
+      .setTitle("✅ | Successful process!")
       .setDescription(
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        "The process has been successful! To confirm press *Yes* or press *No* to cancel."
       )
-      .setFooter("Footer")
+      .setFooter("WwebjsSender")
       .setTimestamp();
 
     let button1 = new WwebjsSender.MessageButton()
-      .setCustomId("id_1")
-      .setLabel("Label");
+      .setCustomId("yes")
+      .setLabel("Yes");
 
     let button2 = new WwebjsSender.MessageButton()
-      .setCustomId("id_2")
-      .setLabel("Label");
+      .setCustomId("no")
+      .setLabel("No");
 
     WwebjsSender.send({
       client: client,

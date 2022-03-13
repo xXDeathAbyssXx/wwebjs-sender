@@ -232,9 +232,9 @@ exports.MessageEmbed = function () {
       if (typeof footer === "string") {
         let lenstr = footer.length;
 
-        if (lenstr > 10) {
+        if (lenstr > 12) {
           return console.error(
-            `MessageEmbed footer string cannot be greater than 10.`
+            `MessageEmbed footer string cannot be greater than 12.`
           );
         } else {
           footer_embed = wall + space + "```" + footer + "```";
