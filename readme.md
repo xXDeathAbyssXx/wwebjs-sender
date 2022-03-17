@@ -93,21 +93,21 @@ client.on("ready", () => {
 client.on("message", (msg) => {
   if (msg.body == "!command") {
     const { from } = msg;
-    let embed = new WwebjsSender.MessageEmbed()
+    let embed = new MessageEmbed()
       .setTitle("✅ | Successful process!")
-      .setDescription(
-        "The process has been successful! To confirm press *Yes* or press *No* to cancel."
-      )
+      .setDescription("The process has been successful!")
+      .addField("✔", "To confirm")
+      .addField("❌", "To cancel")
+      .addFields({
+        name: "Now you have 2 buttons to   choose!",
+        value: "✔ or ❌",
+      })
       .setFooter("WwebjsSender")
       .setTimestamp();
 
-    let button1 = new WwebjsSender.MessageButton()
-      .setCustomId("yes")
-      .setLabel("Yes");
+    let button1 = new MessageButton().setCustomId("confirm").setLabel("✔");
 
-    let button2 = new WwebjsSender.MessageButton()
-      .setCustomId("no")
-      .setLabel("No");
+    let button2 = new MessageButton().setCustomId("cancel").setLabel("❌");
 
     WwebjsSender.send({
       client: client,
@@ -124,7 +124,7 @@ client.initialize();
 ## 👀 Example Result:
 
 <div align="center">
-<img height="400vh" src="https://i.imgur.com/svlQTdu.png">
+<img height="400vh" src="https://i.imgur.com/zuvJ5iR.jpeg">
 </div>
 
 ---
@@ -138,6 +138,8 @@ let embed = new MessageEmbed() //Call the constructor MessageEmbed
   .setTitle("Title") //Set a title for the embed [optional]
   .setDescription("Description") //Set a description for the embed [required]
   .setFooter("Footer") //Set a footer for the embed [optional]
+  .addField("Name", "Value") //Set a field name for the embed [optional]
+  .addFields({ name: "Name", value: "Value" }) //set fields for the embed [optional]
   .setTimestamp(); //Set a timestamp for the embed [optional]
 ```
 
