@@ -468,6 +468,7 @@ exports.MessageButton = function () {
  * @property {object} [message] The message to reply
  * @property {object} [embed] The embed to reply
  */
+
 exports.reply = function ({ message, embed }) {
   if (typeof message === "object") {
     if (typeof embed === "object") {
@@ -481,7 +482,7 @@ exports.reply = function ({ message, embed }) {
       let down_r = "┘";
       let wall = "│";
       let space = " ";
-      let max = 26;
+      let max = 28;
       let title = embed.title;
       let lentitle;
       if (title === null) {
@@ -515,7 +516,7 @@ exports.reply = function ({ message, embed }) {
 
                 if (lenstr_name > max) {
                   let o = lenstr_name + 1;
-                  let parts = 26;
+                  let parts = 28;
                   let parts_count = 0;
                   let parts_count_loop = 0;
                   let help_loop = false;
@@ -526,7 +527,7 @@ exports.reply = function ({ message, embed }) {
                       arr_parts.push(i);
                       parts_count++;
                       parts_count_loop++;
-                      parts = parts + 26;
+                      parts = parts + 28;
                     }
                     if (i === lenstr_name) {
                       help_loop = true;
@@ -542,7 +543,7 @@ exports.reply = function ({ message, embed }) {
 
                   let arr = [];
                   let liceit = 0;
-                  let liceitagain = 26;
+                  let liceitagain = 28;
                   let see_final = parts_count_loop - 1;
                   for (let i = 0; i < parts_count_loop; i++) {
                     if (i === see_final) {
@@ -563,8 +564,8 @@ exports.reply = function ({ message, embed }) {
                     let maketheslice = fields_name.slice(liceit, liceitagain);
                     let final_result = wall + space + maketheslice;
                     arr.push(final_result);
-                    liceit = liceit + 26;
-                    liceitagain = liceitagain + 26;
+                    liceit = liceit + 28;
+                    liceitagain = liceitagain + 28;
                   }
                   let fields_namearr = "";
                   let see_final_arr = arr.length - 1;
@@ -577,9 +578,9 @@ exports.reply = function ({ message, embed }) {
                   }
                   fields_name_embed = fields_namearr + "  |";
                 } else {
-                  if (lenstr_name < 27) {
+                  if (lenstr_name < 29) {
                     final_count_name = lenstr_name;
-                    let getspaces = 26 - lenstr_name;
+                    let getspaces = 28 - lenstr_name;
                     if (getspaces === 0) {
                       let spacessums = space;
                       for (let i = 0; i < getspaces; i++) {
@@ -610,7 +611,7 @@ exports.reply = function ({ message, embed }) {
 
                 if (lenstr_value > max) {
                   let o = lenstr_value + 1;
-                  let parts = 26;
+                  let parts = 28;
                   let parts_count = 0;
                   let parts_count_loop = 0;
                   let help_loop = false;
@@ -621,7 +622,7 @@ exports.reply = function ({ message, embed }) {
                       arr_parts.push(i);
                       parts_count++;
                       parts_count_loop++;
-                      parts = parts + 26;
+                      parts = parts + 28;
                     }
                     if (i === lenstr_value) {
                       help_loop = true;
@@ -637,7 +638,7 @@ exports.reply = function ({ message, embed }) {
 
                   let arr = [];
                   let liceit = 0;
-                  let liceitagain = 26;
+                  let liceitagain = 28;
                   let see_final = parts_count_loop - 1;
                   for (let i = 0; i < parts_count_loop; i++) {
                     if (i === see_final) {
@@ -656,8 +657,8 @@ exports.reply = function ({ message, embed }) {
                     let maketheslice = fields_value.slice(liceit, liceitagain);
                     let final_result = space + maketheslice;
                     arr.push(final_result);
-                    liceit = liceit + 26;
-                    liceitagain = liceitagain + 26;
+                    liceit = liceit + 28;
+                    liceitagain = liceitagain + 28;
                   }
                   let fields_valuearr = "";
                   let see_final_arr = arr.length - 1;
@@ -670,9 +671,9 @@ exports.reply = function ({ message, embed }) {
                   }
                   fields_value_embed = fields_valuearr + "\n";
                 } else {
-                  if (lenstr_value < 27) {
+                  if (lenstr_value < 29) {
                     final_count_value = lenstr_value;
-                    let getspaces = 26 - lenstr_value;
+                    let getspaces = 28 - lenstr_value;
                     if (getspaces === 0) {
                       let spacessums = space;
                       for (let i = 0; i < getspaces; i++) {
@@ -797,7 +798,7 @@ exports.send = function ({ client, number, embed, button }) {
           let down_r = "┘";
           let wall = "│";
           let space = " ";
-          let max = 26;
+          let max = 28;
           let title = embed.title;
           let lentitle;
           if (title === null) {
@@ -831,7 +832,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                     if (lenstr_name > max) {
                       let o = lenstr_name + 1;
-                      let parts = 26;
+                      let parts = 28;
                       let parts_count = 0;
                       let parts_count_loop = 0;
                       let help_loop = false;
@@ -842,7 +843,7 @@ exports.send = function ({ client, number, embed, button }) {
                           arr_parts.push(i);
                           parts_count++;
                           parts_count_loop++;
-                          parts = parts + 26;
+                          parts = parts + 28;
                         }
                         if (i === lenstr_name) {
                           help_loop = true;
@@ -858,7 +859,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       let arr = [];
                       let liceit = 0;
-                      let liceitagain = 26;
+                      let liceitagain = 28;
                       let see_final = parts_count_loop - 1;
                       for (let i = 0; i < parts_count_loop; i++) {
                         if (i === see_final) {
@@ -882,8 +883,8 @@ exports.send = function ({ client, number, embed, button }) {
                         );
                         let final_result = wall + space + maketheslice;
                         arr.push(final_result);
-                        liceit = liceit + 26;
-                        liceitagain = liceitagain + 26;
+                        liceit = liceit + 28;
+                        liceitagain = liceitagain + 28;
                       }
                       let fields_namearr = "";
                       let see_final_arr = arr.length - 1;
@@ -896,9 +897,9 @@ exports.send = function ({ client, number, embed, button }) {
                       }
                       fields_name_embed = fields_namearr + "  |";
                     } else {
-                      if (lenstr_name < 27) {
+                      if (lenstr_name < 29) {
                         final_count_name = lenstr_name;
-                        let getspaces = 26 - lenstr_name;
+                        let getspaces = 28 - lenstr_name;
                         if (getspaces === 0) {
                           let spacessums = space;
                           for (let i = 0; i < getspaces; i++) {
@@ -929,7 +930,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                     if (lenstr_value > max) {
                       let o = lenstr_value + 1;
-                      let parts = 26;
+                      let parts = 28;
                       let parts_count = 0;
                       let parts_count_loop = 0;
                       let help_loop = false;
@@ -940,7 +941,7 @@ exports.send = function ({ client, number, embed, button }) {
                           arr_parts.push(i);
                           parts_count++;
                           parts_count_loop++;
-                          parts = parts + 26;
+                          parts = parts + 28;
                         }
                         if (i === lenstr_value) {
                           help_loop = true;
@@ -956,7 +957,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       let arr = [];
                       let liceit = 0;
-                      let liceitagain = 26;
+                      let liceitagain = 28;
                       let see_final = parts_count_loop - 1;
                       for (let i = 0; i < parts_count_loop; i++) {
                         if (i === see_final) {
@@ -978,8 +979,8 @@ exports.send = function ({ client, number, embed, button }) {
                         );
                         let final_result = space + maketheslice;
                         arr.push(final_result);
-                        liceit = liceit + 26;
-                        liceitagain = liceitagain + 26;
+                        liceit = liceit + 28;
+                        liceitagain = liceitagain + 28;
                       }
                       let fields_valuearr = "";
                       let see_final_arr = arr.length - 1;
@@ -992,9 +993,9 @@ exports.send = function ({ client, number, embed, button }) {
                       }
                       fields_value_embed = fields_valuearr + "\n";
                     } else {
-                      if (lenstr_value < 27) {
+                      if (lenstr_value < 29) {
                         final_count_value = lenstr_value;
-                        let getspaces = 26 - lenstr_value;
+                        let getspaces = 28 - lenstr_value;
                         if (getspaces === 0) {
                           let spacessums = space;
                           for (let i = 0; i < getspaces; i++) {
@@ -1111,7 +1112,7 @@ exports.send = function ({ client, number, embed, button }) {
             let down_r = "┘";
             let wall = "│";
             let space = " ";
-            let max = 26;
+            let max = 28;
             let title = embed.title;
             let lentitle;
             if (title === null) {
@@ -1145,7 +1146,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       if (lenstr_name > max) {
                         let o = lenstr_name + 1;
-                        let parts = 26;
+                        let parts = 28;
                         let parts_count = 0;
                         let parts_count_loop = 0;
                         let help_loop = false;
@@ -1156,7 +1157,7 @@ exports.send = function ({ client, number, embed, button }) {
                             arr_parts.push(i);
                             parts_count++;
                             parts_count_loop++;
-                            parts = parts + 26;
+                            parts = parts + 28;
                           }
                           if (i === lenstr_name) {
                             help_loop = true;
@@ -1172,7 +1173,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                         let arr = [];
                         let liceit = 0;
-                        let liceitagain = 26;
+                        let liceitagain = 28;
                         let see_final = parts_count_loop - 1;
                         for (let i = 0; i < parts_count_loop; i++) {
                           if (i === see_final) {
@@ -1196,8 +1197,8 @@ exports.send = function ({ client, number, embed, button }) {
                           );
                           let final_result = wall + space + maketheslice;
                           arr.push(final_result);
-                          liceit = liceit + 26;
-                          liceitagain = liceitagain + 26;
+                          liceit = liceit + 28;
+                          liceitagain = liceitagain + 28;
                         }
                         let fields_namearr = "";
                         let see_final_arr = arr.length - 1;
@@ -1210,9 +1211,9 @@ exports.send = function ({ client, number, embed, button }) {
                         }
                         fields_name_embed = fields_namearr + "  |";
                       } else {
-                        if (lenstr_name < 27) {
+                        if (lenstr_name < 29) {
                           final_count_name = lenstr_name;
-                          let getspaces = 26 - lenstr_name;
+                          let getspaces = 28 - lenstr_name;
                           if (getspaces === 0) {
                             let spacessums = space;
                             for (let i = 0; i < getspaces; i++) {
@@ -1243,7 +1244,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       if (lenstr_value > max) {
                         let o = lenstr_value + 1;
-                        let parts = 26;
+                        let parts = 28;
                         let parts_count = 0;
                         let parts_count_loop = 0;
                         let help_loop = false;
@@ -1254,7 +1255,7 @@ exports.send = function ({ client, number, embed, button }) {
                             arr_parts.push(i);
                             parts_count++;
                             parts_count_loop++;
-                            parts = parts + 26;
+                            parts = parts + 28;
                           }
                           if (i === lenstr_value) {
                             help_loop = true;
@@ -1270,7 +1271,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                         let arr = [];
                         let liceit = 0;
-                        let liceitagain = 26;
+                        let liceitagain = 28;
                         let see_final = parts_count_loop - 1;
                         for (let i = 0; i < parts_count_loop; i++) {
                           if (i === see_final) {
@@ -1292,8 +1293,8 @@ exports.send = function ({ client, number, embed, button }) {
                           );
                           let final_result = space + maketheslice;
                           arr.push(final_result);
-                          liceit = liceit + 26;
-                          liceitagain = liceitagain + 26;
+                          liceit = liceit + 28;
+                          liceitagain = liceitagain + 28;
                         }
                         let fields_valuearr = "";
                         let see_final_arr = arr.length - 1;
@@ -1306,9 +1307,9 @@ exports.send = function ({ client, number, embed, button }) {
                         }
                         fields_value_embed = fields_valuearr + "\n";
                       } else {
-                        if (lenstr_value < 27) {
+                        if (lenstr_value < 29) {
                           final_count_value = lenstr_value;
-                          let getspaces = 26 - lenstr_value;
+                          let getspaces = 28 - lenstr_value;
                           if (getspaces === 0) {
                             let spacessums = space;
                             for (let i = 0; i < getspaces; i++) {
