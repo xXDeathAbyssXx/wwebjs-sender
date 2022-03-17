@@ -1,10 +1,11 @@
 const { Buttons } = require("whatsapp-web.js");
 const isPhone = require("is-phone");
+const Util = require("./util/Util");
 
 /**
  * Represents an embed in a message with strings ascii design
  */
-exports.MessageEmbed = function () {
+exports.MessageEmbed = class MessageEmbed {
   /**
    * Represents the possible options for a MessageEmbed
    * @property {string} [title] The title of this embed
@@ -12,267 +13,399 @@ exports.MessageEmbed = function () {
    * @property {string} [footer] The footer of this embed
    * @property {*} [timestamp=Date.now()] Show/Hide the timestamp of this embed
    */
-  let title;
-  let description;
-  let footer;
-  let timestamp = false;
-  let title_embed = "";
-  let desc_embed = "";
-  let footer_embed = "";
-  let timestap_embed = "";
 
-  let max = 28;
-  let up_l = "┌";
-  let up_r = "┐";
-  let down_l = "└";
-  let down_r = "┘";
-  let wall = "│";
-  let space = " ";
+  constructor(data = {}, skipValidation = false) {
+    this.setup(data, skipValidation);
+  }
 
-  return {
+  setup(data, skipValidation) {
     /**
-     * Sets the title of this embed.
-     * @param {string} title The title
-     * @returns {MessageEmbed}
+     * The title of this embed
+     * @type {?string}
      */
-    setTitle: function (title) {
-      if (typeof title === "string") {
-        let lenstr = title.length;
-        if (lenstr > max) {
-          let o = lenstr + 1;
-          let parts = 28;
-          let parts_count = 0;
-          let parts_count_loop = 0;
-          let help_loop = false;
-          let final_count = 0;
-          let arr_parts = [];
-          for (let i = 0; i < o; i++) {
-            if (i === parts) {
-              arr_parts.push(i);
-              parts_count++;
-              parts_count_loop++;
-              parts = parts + 28;
-            }
-            if (i === lenstr) {
-              help_loop = true;
-              let lastElement = arr_parts[arr_parts.length - 1];
-              final_count = i - lastElement;
-              final_count = final_count + lastElement;
-              arr_parts.push(final_count);
-            }
-          }
-          if (help_loop === true) {
+    this.title = data.title ?? null;
+
+    /**
+     * The description of this embed
+     * @type {?string}
+     */
+    this.description = data.description ?? null;
+
+    /**
+     * The timestamp of this embed
+     * @type {?number}
+     */
+    this.timestamp =
+      "timestamp" in data ? new Date(data.timestamp).getTime() : null;
+
+    /**
+     * Represents a field of a MessageEmbed
+     * @typedef {Object} EmbedField
+     * @property {string} name The name of this field
+     * @property {string} value The value of this field
+     */
+
+    /**
+     * The fields of this embed
+     * @type {EmbedField[]}
+     */
+    this.fields = [];
+    if (data.fields) {
+      this.fields = skipValidation
+        ? data.fields.map(Util.cloneObject)
+        : this.constructor.normalizeFields(data.fields);
+    }
+
+    /**
+     * The footer of this embed
+     * @type {?string}
+     */
+    this.footer = data.footer ?? null;
+  }
+
+  /**
+   * Checks if this embed is equal to another one by comparing every single one of their properties.
+   * @param {MessageEmbed|APIEmbed} embed The embed to compare with
+   * @returns {boolean}
+   */
+  equals(embed) {
+    return (
+      this.title === embed.title &&
+      this.description === embed.description &&
+      this.timestamp === embed.timestamp &&
+      this.fields.length === embed.fields.length &&
+      this.fields.every((field, i) =>
+        this._fieldEquals(field, embed.fields[i])
+      ) &&
+      this.footer === embed.footer
+    );
+  }
+
+  /**
+   * Compares two given embed fields to see if they are equal
+   * @param {EmbedFieldData} field The first field to compare
+   * @param {EmbedFieldData} other The second field to compare
+   * @returns {boolean}
+   * @private
+   */
+  _fieldEquals(field, other) {
+    return field.name === other.name && field.value === other.value;
+  }
+
+  /**
+   * Adds a field to the embed (max 25).
+   * @param {string} name The name of this field
+   * @param {string} value The value of this field
+   * @param {boolean} [inline=false] If this field will be displayed inline
+   * @returns {MessageEmbed}
+   */
+  addField(name, value) {
+    return this.addFields({ name, value });
+  }
+
+  /**
+   * Adds fields to the embed (max 25).
+   * @param {...EmbedFieldData|EmbedFieldData[]} fields The fields to add
+   * @returns {MessageEmbed}
+   */
+  addFields(...fields) {
+    this.fields.push(...this.constructor.normalizeFields(fields));
+    return this;
+  }
+
+  /**
+   * Sets the description of this embed.
+   * @param {string} description The description
+   * @returns {MessageEmbed}
+   */
+  setDescription(description) {
+    let desc_embed = "";
+    let max = 28;
+    let wall = "│";
+    let space = " ";
+
+    if (typeof description === "string") {
+      let lenstr = description.length;
+
+      if (lenstr < 1) {
+        return console.error(
+          "MessageEmbed description must be non-empty strings."
+        );
+      }
+
+      if (lenstr > max) {
+        let o = lenstr + 1;
+        let parts = 28;
+        let parts_count = 0;
+        let parts_count_loop = 0;
+        let help_loop = false;
+        let final_count = 0;
+        let arr_parts = [];
+        for (let i = 0; i < o; i++) {
+          if (i === parts) {
+            arr_parts.push(i);
+            parts_count++;
             parts_count_loop++;
+            parts = parts + 28;
           }
+          if (i === lenstr) {
+            help_loop = true;
+            let lastElement = arr_parts[arr_parts.length - 1];
+            final_count = i - lastElement;
+            final_count = final_count + lastElement;
+            arr_parts.push(final_count);
+          }
+        }
+        if (help_loop === true) {
+          parts_count_loop++;
+        }
 
-          let arr = [];
-          let liceit = 0;
-          let liceitagain = 28;
-          let see_final = parts_count_loop - 1;
-          for (let i = 0; i < parts_count_loop; i++) {
-            if (i === see_final) {
-              let neednum = i - 1;
-              let fix_another_last = arr_parts[neednum];
-              let fix_last = arr_parts[i];
-              let maketheslicefix = title.slice(fix_another_last, fix_last);
-              let final_result = wall + space + " *" + maketheslicefix + "* ";
-              arr.push(final_result);
-              break;
-            }
-            let maketheslice = title.slice(liceit, liceitagain);
-            let final_result = wall + space + " *" + maketheslice + "* ";
+        let arr = [];
+        let liceit = 0;
+        let liceitagain = 28;
+        let see_final = parts_count_loop - 1;
+        for (let i = 0; i < parts_count_loop; i++) {
+          if (i === see_final) {
+            let neednum = i - 1;
+            let fix_another_last = arr_parts[neednum];
+            let fix_last = arr_parts[i];
+            let maketheslicefix = description.slice(fix_another_last, fix_last);
+            let final_result = wall + space + maketheslicefix;
             arr.push(final_result);
-            liceit = liceit + 28;
-            liceitagain = liceitagain + 28;
+            break;
           }
-          let titlearr = "";
-          let see_final_arr = arr.length - 1;
-          for (let i = 0; i < arr.length; i++) {
-            if (i === see_final_arr) {
-              titlearr = titlearr + arr[i];
-              break;
-            }
-            titlearr = titlearr + arr[i] + "\n";
-          }
-          title_embed = titlearr;
-        } else {
-          if (lenstr < 29) {
-            let getspaces = 28 - lenstr;
-            if (getspaces === 0) {
-              let spacessums = space;
-              for (let i = 0; i < getspaces; i++) {
-                spacessums = spacessums + space;
-              }
-              let titletoembed = wall + space + " *" + title + "* ";
-              title_embed = titletoembed;
-            } else {
-              let spacessums = "";
-              for (let i = 0; i < getspaces; i++) {
-                spacessums = spacessums + space;
-              }
-              let titletoembed = wall + space + " *" + title + "* ";
-              title_embed = titletoembed;
-            }
-          }
+          let maketheslice = description.slice(liceit, liceitagain);
+          let final_result = wall + space + maketheslice;
+          arr.push(final_result);
+          liceit = liceit + 28;
+          liceitagain = liceitagain + 28;
         }
+        let descarr = "";
+        let see_final_arr = arr.length - 1;
+        for (let i = 0; i < arr.length; i++) {
+          if (i === see_final_arr) {
+            descarr = descarr + arr[i];
+            break;
+          }
+          descarr = descarr + arr[i] + "\n";
+        }
+        desc_embed = "\n" + descarr + "\n";
       } else {
-        return console.error("MessageEmbed title must be a string.");
-      }
-      this.title = title_embed;
-      return this;
-    },
-    /**
-     * Sets the description of this embed.
-     * @param {string} description The description
-     * @returns {MessageEmbed}
-     */
-    setDescription: function (description) {
-      if (typeof description === "string") {
-        let lenstr = description.length;
-
-        if (lenstr < 1) {
-          return console.error(
-            "MessageEmbed description must be non-empty strings."
-          );
-        }
-
-        if (lenstr > max) {
-          let o = lenstr + 1;
-          let parts = 28;
-          let parts_count = 0;
-          let parts_count_loop = 0;
-          let help_loop = false;
-          let final_count = 0;
-          let arr_parts = [];
-          for (let i = 0; i < o; i++) {
-            if (i === parts) {
-              arr_parts.push(i);
-              parts_count++;
-              parts_count_loop++;
-              parts = parts + 28;
+        if (lenstr < 29) {
+          let getspaces = 28 - lenstr;
+          if (getspaces === 0) {
+            let spacessums = space;
+            for (let i = 0; i < getspaces; i++) {
+              spacessums = spacessums + space;
             }
-            if (i === lenstr) {
-              help_loop = true;
-              let lastElement = arr_parts[arr_parts.length - 1];
-              final_count = i - lastElement;
-              final_count = final_count + lastElement;
-              arr_parts.push(final_count);
+            let desctoembed = wall + space + description;
+            desc_embed = "\n" + desctoembed + "\n";
+          } else {
+            let spacessums = "";
+            for (let i = 0; i < getspaces; i++) {
+              spacessums = spacessums + space;
             }
+            let desctoembed = wall + space + description;
+            desc_embed = "\n" + desctoembed + "\n";
           }
-          if (help_loop === true) {
+        }
+      }
+    } else {
+      return console.error("MessageEmbed description must be a string.");
+    }
+
+    this.description = desc_embed;
+    return this;
+  }
+
+  /**
+   * Sets the footer of this embed.
+   * @param {string} footer The footer
+   * @returns {MessageEmbed}
+   */
+  setFooter(footer) {
+    let footer_embed = "";
+    let wall = "│";
+    let space = " ";
+    if (typeof footer === "string") {
+      let lenstr = footer.length;
+
+      if (lenstr > 20) {
+        return console.error(
+          `MessageEmbed footer string cannot be greater than 20.`
+        );
+      } else {
+        footer_embed = wall + space + "```" + footer + "```";
+      }
+    } else {
+      return console.error("MessageEmbed footer must be a string.");
+    }
+
+    this.footer = footer_embed;
+    return this;
+  }
+
+  /**
+   * Sets the timestamp of this embed.
+   * @param {*} [timestamp=Date.now()] The timestamp or date.
+   * If `null` then the timestamp will be unset (i.e. when editing an existing {@link MessageEmbed})
+   * @returns {MessageEmbed}
+   */
+  setTimestamp(timestamp) {
+    let timestap_embed = "";
+    if (timestamp === undefined) {
+      const today = new Date();
+      const date =
+        today.getMonth() +
+        "/" +
+        (today.getDate() + 1) +
+        "/" +
+        today.getFullYear();
+
+      timestap_embed = `  *•*  ${date}`;
+    }
+
+    this.timestamp = timestap_embed;
+    return this;
+  }
+
+  /**
+   * Sets the title of this embed.
+   * @param {string} title The title
+   * @returns {MessageEmbed}
+   */
+  setTitle(title) {
+    let title_embed = "";
+
+    let max = 28;
+    let wall = "│";
+    let space = " ";
+
+    if (typeof title === "string") {
+      let lenstr = title.length;
+      if (lenstr > max) {
+        let o = lenstr + 1;
+        let parts = 28;
+        let parts_count = 0;
+        let parts_count_loop = 0;
+        let help_loop = false;
+        let final_count = 0;
+        let arr_parts = [];
+        for (let i = 0; i < o; i++) {
+          if (i === parts) {
+            arr_parts.push(i);
+            parts_count++;
             parts_count_loop++;
+            parts = parts + 28;
           }
+          if (i === lenstr) {
+            help_loop = true;
+            let lastElement = arr_parts[arr_parts.length - 1];
+            final_count = i - lastElement;
+            final_count = final_count + lastElement;
+            arr_parts.push(final_count);
+          }
+        }
+        if (help_loop === true) {
+          parts_count_loop++;
+        }
 
-          let arr = [];
-          let liceit = 0;
-          let liceitagain = 28;
-          let see_final = parts_count_loop - 1;
-          for (let i = 0; i < parts_count_loop; i++) {
-            if (i === see_final) {
-              let neednum = i - 1;
-              let fix_another_last = arr_parts[neednum];
-              let fix_last = arr_parts[i];
-              let maketheslicefix = description.slice(
-                fix_another_last,
-                fix_last
-              );
-              let final_result = wall + space + maketheslicefix;
-              arr.push(final_result);
-              break;
-            }
-            let maketheslice = description.slice(liceit, liceitagain);
-            let final_result = wall + space + maketheslice;
+        let arr = [];
+        let liceit = 0;
+        let liceitagain = 28;
+        let see_final = parts_count_loop - 1;
+        for (let i = 0; i < parts_count_loop; i++) {
+          if (i === see_final) {
+            let neednum = i - 1;
+            let fix_another_last = arr_parts[neednum];
+            let fix_last = arr_parts[i];
+            let maketheslicefix = title.slice(fix_another_last, fix_last);
+            let final_result = wall + space + " *" + maketheslicefix + "* ";
             arr.push(final_result);
-            liceit = liceit + 28;
-            liceitagain = liceitagain + 28;
+            break;
           }
-          let descarr = "";
-          let see_final_arr = arr.length - 1;
-          for (let i = 0; i < arr.length; i++) {
-            if (i === see_final_arr) {
-              descarr = descarr + arr[i];
-              break;
-            }
-            descarr = descarr + arr[i] + "\n";
+          let maketheslice = title.slice(liceit, liceitagain);
+          let final_result = wall + space + " *" + maketheslice + "* ";
+          arr.push(final_result);
+          liceit = liceit + 28;
+          liceitagain = liceitagain + 28;
+        }
+        let titlearr = "";
+        let see_final_arr = arr.length - 1;
+        for (let i = 0; i < arr.length; i++) {
+          if (i === see_final_arr) {
+            titlearr = titlearr + arr[i];
+            break;
           }
-          desc_embed = "\n" + descarr + "\n";
-        } else {
-          if (lenstr < 29) {
-            let getspaces = 28 - lenstr;
-            if (getspaces === 0) {
-              let spacessums = space;
-              for (let i = 0; i < getspaces; i++) {
-                spacessums = spacessums + space;
-              }
-              let desctoembed = wall + space + description;
-              desc_embed = "\n" + desctoembed + "\n";
-            } else {
-              let spacessums = "";
-              for (let i = 0; i < getspaces; i++) {
-                spacessums = spacessums + space;
-              }
-              let desctoembed = wall + space + description;
-              desc_embed = "\n" + desctoembed + "\n";
+          titlearr = titlearr + arr[i] + "\n";
+        }
+        title_embed = titlearr;
+      } else {
+        if (lenstr < 29) {
+          let getspaces = 28 - lenstr;
+          if (getspaces === 0) {
+            let spacessums = space;
+            for (let i = 0; i < getspaces; i++) {
+              spacessums = spacessums + space;
             }
+            let titletoembed = wall + space + " *" + title + "* ";
+            title_embed = titletoembed;
+          } else {
+            let spacessums = "";
+            for (let i = 0; i < getspaces; i++) {
+              spacessums = spacessums + space;
+            }
+            let titletoembed = wall + space + " *" + title + "* ";
+            title_embed = titletoembed;
           }
         }
-      } else {
-        return console.error("MessageEmbed description must be a string.");
       }
+    } else {
+      return console.error("MessageEmbed title must be a string.");
+    }
+    this.title = title_embed;
+    return this;
+  }
 
-      this.description = desc_embed;
-      return this;
-    },
-    /**
-     * Sets the footer of this embed.
-     * @param {string} footer The footer
-     * @returns {MessageEmbed}
-     */
-    setFooter: function (footer) {
-      if (typeof footer === "string") {
-        let lenstr = footer.length;
+  /**
+   * Transforms the embed to a plain object.
+   * @returns {APIEmbed} The raw data of this embed
+   */
+  toJSON() {
+    return {
+      title: this.title,
+      description: this.description,
+      timestamp: this.timestamp && new Date(this.timestamp),
+      fields: this.fields,
+      footer: this.footer,
+    };
+  }
 
-        if (lenstr > 20) {
-          return console.error(
-            `MessageEmbed footer string cannot be greater than 20.`
-          );
-        } else {
-          footer_embed = wall + space + "```" + footer + "```";
-        }
-      } else {
-        return console.error("MessageEmbed footer must be a string.");
-      }
+  /**
+   * Normalizes field input and verifies strings.
+   * @param {string} name The name of the field
+   * @param {string} value The value of the field
+   * @returns {EmbedField}
+   */
+  static normalizeField(name, value) {
+    return {
+      name: Util.verifyString(name, RangeError, "EMBED_FIELD_NAME", false),
+      value: Util.verifyString(value, RangeError, "EMBED_FIELD_VALUE", false),
+    };
+  }
 
-      this.footer = footer_embed;
-      return this;
-    },
-    /**
-     * Sets the timestamp of this embed.
-     * @param {*} [timestamp=Date.now()] The timestamp or date.
-     * If `null` then the timestamp will be unset (i.e. when editing an existing {@link MessageEmbed})
-     * @returns {MessageEmbed}
-     */
-    setTimestamp: function (timestamp) {
-      if (timestamp === undefined) {
-        const today = new Date();
-        const date =
-          today.getMonth() +
-          "/" +
-          (today.getDate() + 1) +
-          "/" +
-          today.getFullYear();
-
-        timestap_embed = `  *•*  ${date}`;
-      }
-
-      this.timestamp = timestap_embed;
-      return this;
-    },
-    build: function () {
-      return new MessageEmbed(title, description, footer, timestamp);
-    },
-  };
+  /**
+   * Normalizes field input and resolves strings.
+   * @param {...EmbedFieldData|EmbedFieldData[]} fields Fields to normalize
+   * @returns {EmbedField[]}
+   */
+  static normalizeFields(...fields) {
+    return fields
+      .flat(2)
+      .map((field) => this.normalizeField(field.name, field.value));
+  }
 };
+
 /**
  * Represents an button object to set in a sendMessage method
  */
@@ -340,22 +473,254 @@ exports.reply = function ({ message, embed }) {
   if (typeof message === "object") {
     if (typeof embed === "object") {
       let result_embed = "";
+      let fields_name_embed = "";
+      let fields_value_embed = "";
+      let fields_embed = "";
       let up_l = "┌";
       let up_r = "┐";
       let down_l = "└";
       let down_r = "┘";
       let wall = "│";
+      let space = " ";
+      let max = 28;
       let title = embed.title;
       let lentitle;
-      if (title === undefined) {
+      if (title === null) {
         lentitle = 0;
       } else {
         lentitle = title.length;
       }
       let description = embed.description;
+      if (description === null) {
+        return console.error("MessageEmbed need description to work.");
+      }
+      let fields = embed.fields;
+      if (!(fields === null)) {
+        if (!(fields.length === null)) {
+          if (!(fields.length === 0)) {
+            if (typeof fields === "object") {
+              let lenstr = fields.length;
+              for (let i = 0; i < lenstr; i++) {
+                let fields_name = fields[i].name;
+                let fields_value = fields[i].value;
+                let lenstr_name = fields_name.length;
+                let lenstr_value = fields_value.length;
+                let final_count_name = 0;
+                let final_count_value = 0;
+
+                if (lenstr_name < 1) {
+                  return console.error(
+                    "MessageEmbed name of field must be non-empty strings."
+                  );
+                }
+
+                if (lenstr_name > max) {
+                  let o = lenstr_name + 1;
+                  let parts = 28;
+                  let parts_count = 0;
+                  let parts_count_loop = 0;
+                  let help_loop = false;
+                  let final_count = 0;
+                  let arr_parts = [];
+                  for (let i = 0; i < o; i++) {
+                    if (i === parts) {
+                      arr_parts.push(i);
+                      parts_count++;
+                      parts_count_loop++;
+                      parts = parts + 28;
+                    }
+                    if (i === lenstr_name) {
+                      help_loop = true;
+                      let lastElement = arr_parts[arr_parts.length - 1];
+                      final_count = i - lastElement;
+                      final_count = final_count + lastElement;
+                      arr_parts.push(final_count);
+                    }
+                  }
+                  if (help_loop === true) {
+                    parts_count_loop++;
+                  }
+
+                  let arr = [];
+                  let liceit = 0;
+                  let liceitagain = 28;
+                  let see_final = parts_count_loop - 1;
+                  for (let i = 0; i < parts_count_loop; i++) {
+                    if (i === see_final) {
+                      let neednum = i - 1;
+                      let fix_another_last = arr_parts[neednum];
+                      let fix_last = arr_parts[i];
+                      let maketheslicefix = fields_name.slice(
+                        fix_another_last,
+                        fix_last
+                      );
+
+                      final_count_name = maketheslicefix.length;
+
+                      let final_result = wall + space + maketheslicefix;
+                      arr.push(final_result);
+                      break;
+                    }
+                    let maketheslice = fields_name.slice(liceit, liceitagain);
+                    let final_result = wall + space + maketheslice;
+                    arr.push(final_result);
+                    liceit = liceit + 28;
+                    liceitagain = liceitagain + 28;
+                  }
+                  let fields_namearr = "";
+                  let see_final_arr = arr.length - 1;
+                  for (let i = 0; i < arr.length; i++) {
+                    if (i === see_final_arr) {
+                      fields_namearr = fields_namearr + arr[i];
+                      break;
+                    }
+                    fields_namearr = fields_namearr + arr[i] + "\n";
+                  }
+                  fields_name_embed = fields_namearr + "  |";
+                } else {
+                  if (lenstr_name < 29) {
+                    final_count_name = lenstr_name;
+                    let getspaces = 28 - lenstr_name;
+                    if (getspaces === 0) {
+                      let spacessums = space;
+                      for (let i = 0; i < getspaces; i++) {
+                        spacessums = spacessums + space;
+                      }
+                      let fields_nametoembed =
+                        wall + space + fields_name + "  |";
+                      fields_name_embed = fields_nametoembed;
+                    } else {
+                      let spacessums = "";
+                      for (let i = 0; i < getspaces; i++) {
+                        spacessums = spacessums + space;
+                      }
+                      let fields_nametoembed =
+                        wall + space + fields_name + "  |";
+                      fields_name_embed = fields_nametoembed;
+                    }
+                  }
+                }
+
+                fields_embed = fields_embed + fields_name_embed;
+
+                if (lenstr_value < 1) {
+                  return console.error(
+                    "MessageEmbed value of field must be non-empty strings."
+                  );
+                }
+
+                if (lenstr_value > max) {
+                  let o = lenstr_value + 1;
+                  let parts = 28;
+                  let parts_count = 0;
+                  let parts_count_loop = 0;
+                  let help_loop = false;
+                  let final_count = 0;
+                  let arr_parts = [];
+                  for (let i = 0; i < o; i++) {
+                    if (i === parts) {
+                      arr_parts.push(i);
+                      parts_count++;
+                      parts_count_loop++;
+                      parts = parts + 28;
+                    }
+                    if (i === lenstr_value) {
+                      help_loop = true;
+                      let lastElement = arr_parts[arr_parts.length - 1];
+                      final_count = i - lastElement;
+                      final_count = final_count + lastElement;
+                      arr_parts.push(final_count);
+                    }
+                  }
+                  if (help_loop === true) {
+                    parts_count_loop++;
+                  }
+
+                  let arr = [];
+                  let liceit = 0;
+                  let liceitagain = 28;
+                  let see_final = parts_count_loop - 1;
+                  for (let i = 0; i < parts_count_loop; i++) {
+                    if (i === see_final) {
+                      let neednum = i - 1;
+                      let fix_another_last = arr_parts[neednum];
+                      let fix_last = arr_parts[i];
+                      let maketheslicefix = fields_value.slice(
+                        fix_another_last,
+                        fix_last
+                      );
+                      final_count_value = maketheslicefix.length;
+                      let final_result = space + maketheslicefix;
+                      arr.push(final_result);
+                      break;
+                    }
+                    let maketheslice = fields_value.slice(liceit, liceitagain);
+                    let final_result = space + maketheslice;
+                    arr.push(final_result);
+                    liceit = liceit + 28;
+                    liceitagain = liceitagain + 28;
+                  }
+                  let fields_valuearr = "";
+                  let see_final_arr = arr.length - 1;
+                  for (let i = 0; i < arr.length; i++) {
+                    if (i === see_final_arr) {
+                      fields_valuearr = fields_valuearr + arr[i];
+                      break;
+                    }
+                    fields_valuearr = fields_valuearr + arr[i] + "\n";
+                  }
+                  fields_value_embed = fields_valuearr + "\n";
+                } else {
+                  if (lenstr_value < 29) {
+                    final_count_value = lenstr_value;
+                    let getspaces = 28 - lenstr_value;
+                    if (getspaces === 0) {
+                      let spacessums = space;
+                      for (let i = 0; i < getspaces; i++) {
+                        spacessums = spacessums + space;
+                      }
+                      let fields_valuetoembed = space + fields_value;
+                      fields_value_embed = fields_valuetoembed + "\n";
+                    } else {
+                      let spacessums = "";
+                      for (let i = 0; i < getspaces; i++) {
+                        spacessums = spacessums + space;
+                      }
+                      let fields_valuetoembed = space + fields_value;
+                      fields_value_embed = fields_valuetoembed + "\n";
+                    }
+                  }
+                }
+                let final_count_new_line = final_count_name + final_count_value;
+                if (final_count_new_line < 27) {
+                  fields_embed =
+                    fields_embed +
+                    fields_value_embed +
+                    wall +
+                    "────────────────────────" +
+                    wall +
+                    "\n";
+                } else {
+                  fields_embed =
+                    fields_embed +
+                    "\n" +
+                    wall +
+                    fields_value_embed +
+                    wall +
+                    "────────────────────────" +
+                    wall +
+                    "\n";
+                }
+              }
+            } else {
+              return console.error("MessageEmbed fields must be a array.");
+            }
+          }
+        }
+      }
       let footer = embed.footer;
       let lenfooter;
-      if (footer === undefined) {
+      if (footer === null) {
         lenfooter = 0;
       } else {
         lenfooter = footer.length;
@@ -367,7 +732,7 @@ exports.reply = function ({ message, embed }) {
         title = "";
       }
 
-      if (timestamp === undefined) {
+      if (timestamp === null) {
         timestamp = "";
       }
 
@@ -377,6 +742,7 @@ exports.reply = function ({ message, embed }) {
           "────────────────────────" +
           wall +
           "\n" +
+          fields_embed +
           footer +
           timestamp +
           "\n";
@@ -420,25 +786,264 @@ exports.send = function ({ client, number, embed, button }) {
       if (!(checkid === "c.us")) {
         return console.error("You must pass a valid number");
       }
-      if (button === undefined) {
+      if (button === null) {
         if (typeof embed === "object") {
           let result_embed = "";
+          let fields_name_embed = "";
+          let fields_value_embed = "";
+          let fields_embed = "";
           let up_l = "┌";
           let up_r = "┐";
           let down_l = "└";
           let down_r = "┘";
           let wall = "│";
+          let space = " ";
+          let max = 28;
           let title = embed.title;
           let lentitle;
-          if (title === undefined) {
+          if (title === null) {
             lentitle = 0;
           } else {
             lentitle = title.length;
           }
           let description = embed.description;
+          if (description === null) {
+            return console.error("MessageEmbed need description to work.");
+          }
+          let fields = embed.fields;
+          if (!(fields === null)) {
+            if (!(fields.length === null)) {
+              if (!(fields.length === 0)) {
+                if (typeof fields === "object") {
+                  let lenstr = fields.length;
+                  for (let i = 0; i < lenstr; i++) {
+                    let fields_name = fields[i].name;
+                    let fields_value = fields[i].value;
+                    let lenstr_name = fields_name.length;
+                    let lenstr_value = fields_value.length;
+                    let final_count_name = 0;
+                    let final_count_value = 0;
+
+                    if (lenstr_name < 1) {
+                      return console.error(
+                        "MessageEmbed name of field must be non-empty strings."
+                      );
+                    }
+
+                    if (lenstr_name > max) {
+                      let o = lenstr_name + 1;
+                      let parts = 28;
+                      let parts_count = 0;
+                      let parts_count_loop = 0;
+                      let help_loop = false;
+                      let final_count = 0;
+                      let arr_parts = [];
+                      for (let i = 0; i < o; i++) {
+                        if (i === parts) {
+                          arr_parts.push(i);
+                          parts_count++;
+                          parts_count_loop++;
+                          parts = parts + 28;
+                        }
+                        if (i === lenstr_name) {
+                          help_loop = true;
+                          let lastElement = arr_parts[arr_parts.length - 1];
+                          final_count = i - lastElement;
+                          final_count = final_count + lastElement;
+                          arr_parts.push(final_count);
+                        }
+                      }
+                      if (help_loop === true) {
+                        parts_count_loop++;
+                      }
+
+                      let arr = [];
+                      let liceit = 0;
+                      let liceitagain = 28;
+                      let see_final = parts_count_loop - 1;
+                      for (let i = 0; i < parts_count_loop; i++) {
+                        if (i === see_final) {
+                          let neednum = i - 1;
+                          let fix_another_last = arr_parts[neednum];
+                          let fix_last = arr_parts[i];
+                          let maketheslicefix = fields_name.slice(
+                            fix_another_last,
+                            fix_last
+                          );
+
+                          final_count_name = maketheslicefix.length;
+
+                          let final_result = wall + space + maketheslicefix;
+                          arr.push(final_result);
+                          break;
+                        }
+                        let maketheslice = fields_name.slice(
+                          liceit,
+                          liceitagain
+                        );
+                        let final_result = wall + space + maketheslice;
+                        arr.push(final_result);
+                        liceit = liceit + 28;
+                        liceitagain = liceitagain + 28;
+                      }
+                      let fields_namearr = "";
+                      let see_final_arr = arr.length - 1;
+                      for (let i = 0; i < arr.length; i++) {
+                        if (i === see_final_arr) {
+                          fields_namearr = fields_namearr + arr[i];
+                          break;
+                        }
+                        fields_namearr = fields_namearr + arr[i] + "\n";
+                      }
+                      fields_name_embed = fields_namearr + "  |";
+                    } else {
+                      if (lenstr_name < 29) {
+                        final_count_name = lenstr_name;
+                        let getspaces = 28 - lenstr_name;
+                        if (getspaces === 0) {
+                          let spacessums = space;
+                          for (let i = 0; i < getspaces; i++) {
+                            spacessums = spacessums + space;
+                          }
+                          let fields_nametoembed =
+                            wall + space + fields_name + "  |";
+                          fields_name_embed = fields_nametoembed;
+                        } else {
+                          let spacessums = "";
+                          for (let i = 0; i < getspaces; i++) {
+                            spacessums = spacessums + space;
+                          }
+                          let fields_nametoembed =
+                            wall + space + fields_name + "  |";
+                          fields_name_embed = fields_nametoembed;
+                        }
+                      }
+                    }
+
+                    fields_embed = fields_embed + fields_name_embed;
+
+                    if (lenstr_value < 1) {
+                      return console.error(
+                        "MessageEmbed value of field must be non-empty strings."
+                      );
+                    }
+
+                    if (lenstr_value > max) {
+                      let o = lenstr_value + 1;
+                      let parts = 28;
+                      let parts_count = 0;
+                      let parts_count_loop = 0;
+                      let help_loop = false;
+                      let final_count = 0;
+                      let arr_parts = [];
+                      for (let i = 0; i < o; i++) {
+                        if (i === parts) {
+                          arr_parts.push(i);
+                          parts_count++;
+                          parts_count_loop++;
+                          parts = parts + 28;
+                        }
+                        if (i === lenstr_value) {
+                          help_loop = true;
+                          let lastElement = arr_parts[arr_parts.length - 1];
+                          final_count = i - lastElement;
+                          final_count = final_count + lastElement;
+                          arr_parts.push(final_count);
+                        }
+                      }
+                      if (help_loop === true) {
+                        parts_count_loop++;
+                      }
+
+                      let arr = [];
+                      let liceit = 0;
+                      let liceitagain = 28;
+                      let see_final = parts_count_loop - 1;
+                      for (let i = 0; i < parts_count_loop; i++) {
+                        if (i === see_final) {
+                          let neednum = i - 1;
+                          let fix_another_last = arr_parts[neednum];
+                          let fix_last = arr_parts[i];
+                          let maketheslicefix = fields_value.slice(
+                            fix_another_last,
+                            fix_last
+                          );
+                          final_count_value = maketheslicefix.length;
+                          let final_result = space + maketheslicefix;
+                          arr.push(final_result);
+                          break;
+                        }
+                        let maketheslice = fields_value.slice(
+                          liceit,
+                          liceitagain
+                        );
+                        let final_result = space + maketheslice;
+                        arr.push(final_result);
+                        liceit = liceit + 28;
+                        liceitagain = liceitagain + 28;
+                      }
+                      let fields_valuearr = "";
+                      let see_final_arr = arr.length - 1;
+                      for (let i = 0; i < arr.length; i++) {
+                        if (i === see_final_arr) {
+                          fields_valuearr = fields_valuearr + arr[i];
+                          break;
+                        }
+                        fields_valuearr = fields_valuearr + arr[i] + "\n";
+                      }
+                      fields_value_embed = fields_valuearr + "\n";
+                    } else {
+                      if (lenstr_value < 29) {
+                        final_count_value = lenstr_value;
+                        let getspaces = 28 - lenstr_value;
+                        if (getspaces === 0) {
+                          let spacessums = space;
+                          for (let i = 0; i < getspaces; i++) {
+                            spacessums = spacessums + space;
+                          }
+                          let fields_valuetoembed = space + fields_value;
+                          fields_value_embed = fields_valuetoembed + "\n";
+                        } else {
+                          let spacessums = "";
+                          for (let i = 0; i < getspaces; i++) {
+                            spacessums = spacessums + space;
+                          }
+                          let fields_valuetoembed = space + fields_value;
+                          fields_value_embed = fields_valuetoembed + "\n";
+                        }
+                      }
+                    }
+                    let final_count_new_line =
+                      final_count_name + final_count_value;
+                    if (final_count_new_line < 27) {
+                      fields_embed =
+                        fields_embed +
+                        fields_value_embed +
+                        wall +
+                        "────────────────────────" +
+                        wall +
+                        "\n";
+                    } else {
+                      fields_embed =
+                        fields_embed +
+                        "\n" +
+                        wall +
+                        fields_value_embed +
+                        wall +
+                        "────────────────────────" +
+                        wall +
+                        "\n";
+                    }
+                  }
+                } else {
+                  return console.error("MessageEmbed fields must be a array.");
+                }
+              }
+            }
+          }
           let footer = embed.footer;
           let lenfooter;
-          if (footer === undefined) {
+          if (footer === null) {
             lenfooter = 0;
           } else {
             lenfooter = footer.length;
@@ -451,7 +1056,7 @@ exports.send = function ({ client, number, embed, button }) {
             title = "";
           }
 
-          if (timestamp === undefined) {
+          if (timestamp === null) {
             timestamp = "";
           }
 
@@ -461,6 +1066,7 @@ exports.send = function ({ client, number, embed, button }) {
               "────────────────────────" +
               wall +
               "\n" +
+              fields_embed +
               footer +
               timestamp +
               "\n";
@@ -483,7 +1089,7 @@ exports.send = function ({ client, number, embed, button }) {
         }
       } else {
         if (typeof button === "object") {
-          if (button.length === undefined) {
+          if (button.length === null) {
             return console.error("Button/s can only be passed by array.");
           }
           let buttonlen = button.length;
@@ -497,22 +1103,263 @@ exports.send = function ({ client, number, embed, button }) {
           let label = button.label;
           if (typeof embed === "object") {
             let result_embed = "";
+            let fields_name_embed = "";
+            let fields_value_embed = "";
+            let fields_embed = "";
             let up_l = "┌";
             let up_r = "┐";
             let down_l = "└";
             let down_r = "┘";
             let wall = "│";
+            let space = " ";
+            let max = 28;
             let title = embed.title;
             let lentitle;
-            if (title === undefined) {
+            if (title === null) {
               lentitle = 0;
             } else {
               lentitle = title.length;
             }
             let description = embed.description;
+            if (description === null) {
+              return console.error("MessageEmbed need description to work.");
+            }
+            let fields = embed.fields;
+            if (!(fields === null)) {
+              if (!(fields.length === null)) {
+                if (!(fields.length === 0)) {
+                  if (typeof fields === "object") {
+                    let lenstr = fields.length;
+                    for (let i = 0; i < lenstr; i++) {
+                      let fields_name = fields[i].name;
+                      let fields_value = fields[i].value;
+                      let lenstr_name = fields_name.length;
+                      let lenstr_value = fields_value.length;
+                      let final_count_name = 0;
+                      let final_count_value = 0;
+
+                      if (lenstr_name < 1) {
+                        return console.error(
+                          "MessageEmbed name of field must be non-empty strings."
+                        );
+                      }
+
+                      if (lenstr_name > max) {
+                        let o = lenstr_name + 1;
+                        let parts = 28;
+                        let parts_count = 0;
+                        let parts_count_loop = 0;
+                        let help_loop = false;
+                        let final_count = 0;
+                        let arr_parts = [];
+                        for (let i = 0; i < o; i++) {
+                          if (i === parts) {
+                            arr_parts.push(i);
+                            parts_count++;
+                            parts_count_loop++;
+                            parts = parts + 28;
+                          }
+                          if (i === lenstr_name) {
+                            help_loop = true;
+                            let lastElement = arr_parts[arr_parts.length - 1];
+                            final_count = i - lastElement;
+                            final_count = final_count + lastElement;
+                            arr_parts.push(final_count);
+                          }
+                        }
+                        if (help_loop === true) {
+                          parts_count_loop++;
+                        }
+
+                        let arr = [];
+                        let liceit = 0;
+                        let liceitagain = 28;
+                        let see_final = parts_count_loop - 1;
+                        for (let i = 0; i < parts_count_loop; i++) {
+                          if (i === see_final) {
+                            let neednum = i - 1;
+                            let fix_another_last = arr_parts[neednum];
+                            let fix_last = arr_parts[i];
+                            let maketheslicefix = fields_name.slice(
+                              fix_another_last,
+                              fix_last
+                            );
+
+                            final_count_name = maketheslicefix.length;
+
+                            let final_result = wall + space + maketheslicefix;
+                            arr.push(final_result);
+                            break;
+                          }
+                          let maketheslice = fields_name.slice(
+                            liceit,
+                            liceitagain
+                          );
+                          let final_result = wall + space + maketheslice;
+                          arr.push(final_result);
+                          liceit = liceit + 28;
+                          liceitagain = liceitagain + 28;
+                        }
+                        let fields_namearr = "";
+                        let see_final_arr = arr.length - 1;
+                        for (let i = 0; i < arr.length; i++) {
+                          if (i === see_final_arr) {
+                            fields_namearr = fields_namearr + arr[i];
+                            break;
+                          }
+                          fields_namearr = fields_namearr + arr[i] + "\n";
+                        }
+                        fields_name_embed = fields_namearr + "  |";
+                      } else {
+                        if (lenstr_name < 29) {
+                          final_count_name = lenstr_name;
+                          let getspaces = 28 - lenstr_name;
+                          if (getspaces === 0) {
+                            let spacessums = space;
+                            for (let i = 0; i < getspaces; i++) {
+                              spacessums = spacessums + space;
+                            }
+                            let fields_nametoembed =
+                              wall + space + fields_name + "  |";
+                            fields_name_embed = fields_nametoembed;
+                          } else {
+                            let spacessums = "";
+                            for (let i = 0; i < getspaces; i++) {
+                              spacessums = spacessums + space;
+                            }
+                            let fields_nametoembed =
+                              wall + space + fields_name + "  |";
+                            fields_name_embed = fields_nametoembed;
+                          }
+                        }
+                      }
+
+                      fields_embed = fields_embed + fields_name_embed;
+
+                      if (lenstr_value < 1) {
+                        return console.error(
+                          "MessageEmbed value of field must be non-empty strings."
+                        );
+                      }
+
+                      if (lenstr_value > max) {
+                        let o = lenstr_value + 1;
+                        let parts = 28;
+                        let parts_count = 0;
+                        let parts_count_loop = 0;
+                        let help_loop = false;
+                        let final_count = 0;
+                        let arr_parts = [];
+                        for (let i = 0; i < o; i++) {
+                          if (i === parts) {
+                            arr_parts.push(i);
+                            parts_count++;
+                            parts_count_loop++;
+                            parts = parts + 28;
+                          }
+                          if (i === lenstr_value) {
+                            help_loop = true;
+                            let lastElement = arr_parts[arr_parts.length - 1];
+                            final_count = i - lastElement;
+                            final_count = final_count + lastElement;
+                            arr_parts.push(final_count);
+                          }
+                        }
+                        if (help_loop === true) {
+                          parts_count_loop++;
+                        }
+
+                        let arr = [];
+                        let liceit = 0;
+                        let liceitagain = 28;
+                        let see_final = parts_count_loop - 1;
+                        for (let i = 0; i < parts_count_loop; i++) {
+                          if (i === see_final) {
+                            let neednum = i - 1;
+                            let fix_another_last = arr_parts[neednum];
+                            let fix_last = arr_parts[i];
+                            let maketheslicefix = fields_value.slice(
+                              fix_another_last,
+                              fix_last
+                            );
+                            final_count_value = maketheslicefix.length;
+                            let final_result = space + maketheslicefix;
+                            arr.push(final_result);
+                            break;
+                          }
+                          let maketheslice = fields_value.slice(
+                            liceit,
+                            liceitagain
+                          );
+                          let final_result = space + maketheslice;
+                          arr.push(final_result);
+                          liceit = liceit + 28;
+                          liceitagain = liceitagain + 28;
+                        }
+                        let fields_valuearr = "";
+                        let see_final_arr = arr.length - 1;
+                        for (let i = 0; i < arr.length; i++) {
+                          if (i === see_final_arr) {
+                            fields_valuearr = fields_valuearr + arr[i];
+                            break;
+                          }
+                          fields_valuearr = fields_valuearr + arr[i] + "\n";
+                        }
+                        fields_value_embed = fields_valuearr + "\n";
+                      } else {
+                        if (lenstr_value < 29) {
+                          final_count_value = lenstr_value;
+                          let getspaces = 28 - lenstr_value;
+                          if (getspaces === 0) {
+                            let spacessums = space;
+                            for (let i = 0; i < getspaces; i++) {
+                              spacessums = spacessums + space;
+                            }
+                            let fields_valuetoembed = space + fields_value;
+                            fields_value_embed = fields_valuetoembed + "\n";
+                          } else {
+                            let spacessums = "";
+                            for (let i = 0; i < getspaces; i++) {
+                              spacessums = spacessums + space;
+                            }
+                            let fields_valuetoembed = space + fields_value;
+                            fields_value_embed = fields_valuetoembed + "\n";
+                          }
+                        }
+                      }
+                      let final_count_new_line =
+                        final_count_name + final_count_value;
+                      if (final_count_new_line < 27) {
+                        fields_embed =
+                          fields_embed +
+                          fields_value_embed +
+                          wall +
+                          "────────────────────────" +
+                          wall +
+                          "\n";
+                      } else {
+                        fields_embed =
+                          fields_embed +
+                          "\n" +
+                          wall +
+                          fields_value_embed +
+                          wall +
+                          "────────────────────────" +
+                          wall +
+                          "\n";
+                      }
+                    }
+                  } else {
+                    return console.error(
+                      "MessageEmbed fields must be a array."
+                    );
+                  }
+                }
+              }
+            }
             let footer = embed.footer;
             let lenfooter;
-            if (footer === undefined) {
+            if (footer === null) {
               lenfooter = 0;
             } else {
               lenfooter = footer.length;
@@ -525,7 +1372,7 @@ exports.send = function ({ client, number, embed, button }) {
               title = "";
             }
 
-            if (timestamp === undefined) {
+            if (timestamp === null) {
               timestamp = "";
             }
 
@@ -535,6 +1382,7 @@ exports.send = function ({ client, number, embed, button }) {
                 "────────────────────────" +
                 wall +
                 "\n" +
+                fields_embed +
                 footer +
                 timestamp +
                 "\n";
