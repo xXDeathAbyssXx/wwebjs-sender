@@ -93,7 +93,7 @@ client.on("ready", () => {
 client.on("message", (msg) => {
   if (msg.body == "!command") {
     const { from } = msg;
-    let embed = new MessageEmbed()
+    let embed = new WwebjsSender.MessageEmbed()
       .setTitle("✅ | Successful process!")
       .setDescription("The process has been successful!")
       .addField("✔", "To confirm")
@@ -105,9 +105,13 @@ client.on("message", (msg) => {
       .setFooter("WwebjsSender")
       .setTimestamp();
 
-    let button1 = new MessageButton().setCustomId("confirm").setLabel("✔");
+    let button1 = new WwebjsSender.MessageButton()
+      .setCustomId("confirm")
+      .setLabel("✔");
 
-    let button2 = new MessageButton().setCustomId("cancel").setLabel("❌");
+    let button2 = new WwebjsSender.MessageButton()
+      .setCustomId("cancel")
+      .setLabel("❌");
 
     WwebjsSender.send({
       client: client,
