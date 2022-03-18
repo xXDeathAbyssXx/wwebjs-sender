@@ -587,7 +587,7 @@ exports.reply = function ({ message, embed }) {
                         spacessums = spacessums + space;
                       }
                       let fields_nametoembed =
-                        wall + space + fields_name + "  |";
+                        wall + space + " *" + fields_name + "*" + "  |";
                       fields_name_embed = fields_nametoembed;
                     } else {
                       let spacessums = "";
@@ -595,7 +595,7 @@ exports.reply = function ({ message, embed }) {
                         spacessums = spacessums + space;
                       }
                       let fields_nametoembed =
-                        wall + space + fields_name + "  |";
+                        wall + space + " *" + fields_name + "*" + "  |";
                       fields_name_embed = fields_nametoembed;
                     }
                   }
