@@ -601,7 +601,7 @@ exports.reply = function ({ message, embed }) {
                   }
                 }
 
-                fields_embed = fields_embed + fields_name_embed;
+                fields_embed = fields_embed + " *" + fields_name_embed + "*";
 
                 if (lenstr_value < 1) {
                   return console.error(
