@@ -571,10 +571,11 @@ exports.reply = function ({ message, embed }) {
                   let see_final_arr = arr.length - 1;
                   for (let i = 0; i < arr.length; i++) {
                     if (i === see_final_arr) {
-                      fields_namearr = fields_namearr + arr[i];
+                      fields_namearr = fields_namearr + " *" + arr[i] + "*";
                       break;
                     }
-                    fields_namearr = fields_namearr + arr[i] + "\n";
+                    fields_namearr =
+                      fields_namearr + " *" + arr[i] + "*" + "\n";
                   }
                   fields_name_embed = fields_namearr + "  |";
                 } else {
