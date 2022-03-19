@@ -5,7 +5,7 @@ const Util = require("./util/Util");
 /**
  * Represents an embed in a message with strings ascii design
  */
-exports.test = class test {
+exports.MessageEmbed = class MessageEmbed {
   /**
    * Represents the possible options for a MessageEmbed
    * @property {string} [title] The title of this embed
