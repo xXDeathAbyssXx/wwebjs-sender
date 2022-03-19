@@ -513,7 +513,6 @@ exports.reply = function ({ message, embed }) {
                     "MessageEmbed name of field must be non-empty strings."
                   );
                 }
-
                 if (lenstr_name > max) {
                   let o = lenstr_name + 1;
                   let parts = 28;
@@ -554,16 +553,25 @@ exports.reply = function ({ message, embed }) {
                         fix_another_last,
                         fix_last
                       );
-
                       final_count_name = maketheslicefix.length;
-
-                      let final_result =
-                        wall + space + " *" + maketheslicefix + "*";
+                      let final_result;
+                      if (i === 0) {
+                        final_result = final_result =
+                          wall + space + " *" + maketheslicefix;
+                      } else {
+                        final_result = wall + space + maketheslicefix;
+                      }
                       arr.push(final_result);
                       break;
                     }
                     let maketheslice = fields_name.slice(liceit, liceitagain);
-                    let final_result = wall + space + " *" + maketheslice + "*";
+                    let final_result;
+                    if (i === 0) {
+                      final_result = final_result =
+                        wall + space + " *" + maketheslice;
+                    } else {
+                      final_result = wall + space + maketheslice;
+                    }
                     arr.push(final_result);
                     liceit = liceit + 28;
                     liceitagain = liceitagain + 28;
@@ -577,7 +585,7 @@ exports.reply = function ({ message, embed }) {
                     }
                     fields_namearr = fields_namearr + arr[i] + "\n";
                   }
-                  fields_name_embed = fields_namearr + "  |";
+                  fields_name_embed = fields_namearr + "*  |";
                 } else {
                   if (lenstr_name < 29) {
                     final_count_name = lenstr_name;
