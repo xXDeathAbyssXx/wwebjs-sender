@@ -557,12 +557,13 @@ exports.reply = function ({ message, embed }) {
 
                       final_count_name = maketheslicefix.length;
 
-                      let final_result = wall + space + maketheslicefix;
+                      let final_result =
+                        wall + space + " *" + maketheslicefix + "*";
                       arr.push(final_result);
                       break;
                     }
                     let maketheslice = fields_name.slice(liceit, liceitagain);
-                    let final_result = wall + space + maketheslice;
+                    let final_result = wall + space + " *" + maketheslice + "*";
                     arr.push(final_result);
                     liceit = liceit + 28;
                     liceitagain = liceitagain + 28;
@@ -571,11 +572,10 @@ exports.reply = function ({ message, embed }) {
                   let see_final_arr = arr.length - 1;
                   for (let i = 0; i < arr.length; i++) {
                     if (i === see_final_arr) {
-                      fields_namearr = fields_namearr + " *" + arr[i] + "*";
+                      fields_namearr = fields_namearr + arr[i];
                       break;
                     }
-                    fields_namearr =
-                      fields_namearr + " *" + arr[i] + "*" + "\n";
+                    fields_namearr = fields_namearr + arr[i] + "\n";
                   }
                   fields_name_embed = fields_namearr + "  |";
                 } else {
@@ -874,7 +874,8 @@ exports.send = function ({ client, number, embed, button }) {
 
                           final_count_name = maketheslicefix.length;
 
-                          let final_result = wall + space + maketheslicefix;
+                          let final_result =
+                            wall + space + " *" + maketheslicefix + "*";
                           arr.push(final_result);
                           break;
                         }
@@ -882,7 +883,8 @@ exports.send = function ({ client, number, embed, button }) {
                           liceit,
                           liceitagain
                         );
-                        let final_result = wall + space + maketheslice;
+                        let final_result =
+                          wall + space + " *" + maketheslice + "*";
                         arr.push(final_result);
                         liceit = liceit + 28;
                         liceitagain = liceitagain + 28;
@@ -907,7 +909,7 @@ exports.send = function ({ client, number, embed, button }) {
                             spacessums = spacessums + space;
                           }
                           let fields_nametoembed =
-                            wall + space + fields_name + "  |";
+                            wall + space + " *" + fields_name + "*" + "  |";
                           fields_name_embed = fields_nametoembed;
                         } else {
                           let spacessums = "";
@@ -915,7 +917,7 @@ exports.send = function ({ client, number, embed, button }) {
                             spacessums = spacessums + space;
                           }
                           let fields_nametoembed =
-                            wall + space + fields_name + "  |";
+                            wall + space + " *" + fields_name + "*" + "  |";
                           fields_name_embed = fields_nametoembed;
                         }
                       }
