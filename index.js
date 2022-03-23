@@ -795,7 +795,7 @@ exports.send = function ({ client, number, embed, button }) {
       if (!(checkid === "c.us")) {
         return console.error("You must pass a valid number");
       }
-      if (button === null) {
+      if (button === null || button === undefined || button.length === 0) {
         if (typeof embed === "object") {
           let result_embed = "";
           let fields_name_embed = "";
