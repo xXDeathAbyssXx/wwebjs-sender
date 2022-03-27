@@ -797,7 +797,7 @@ exports.reply = function ({ message, embed }) {
       }
       let timestamp = embed.timestamp;
       if (lentitle > 2) {
-        title = "\n" + title + "\n" + wall + lines + wall;
+        title = "\n" + title + "\n" + wall + "\n" + lines + wall;
       } else {
         title = "";
       }
@@ -808,7 +808,15 @@ exports.reply = function ({ message, embed }) {
 
       if (lenfooter > 2) {
         footer =
-          wall + lines + wall + "\n" + fields_embed + footer + timestamp + "\n";
+          wall +
+          "\n" +
+          lines +
+          wall +
+          "\n" +
+          fields_embed +
+          footer +
+          timestamp +
+          "\n";
       } else {
         footer = "";
       }
@@ -1132,7 +1140,7 @@ exports.send = function ({ client, number, embed, button }) {
           }
           let timestamp = embed.timestamp;
           if (lentitle > 2) {
-            title = "\n" + title + "\n" + wall + lines + wall;
+            title = "\n" + title + "\n" + wall + "\n" + lines + wall;
           } else {
             title = "";
           }
@@ -1453,7 +1461,7 @@ exports.send = function ({ client, number, embed, button }) {
             }
             let timestamp = embed.timestamp;
             if (lentitle > 2) {
-              title = "\n" + title + "\n" + wall + lines + wall;
+              title = "\n" + title + "\n" + wall + "\n" + lines + wall;
             } else {
               title = "";
             }
