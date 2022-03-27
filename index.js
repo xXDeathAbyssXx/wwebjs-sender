@@ -875,14 +875,26 @@ exports.send = function ({ client, number, embed, button }) {
           let space = " ";
           let size_embed = embed.px;
           let max = 28;
-          if (!(size_embed.char === null || size_embed.char === undefined)) {
+          if (
+            !(
+              size_embed === null ||
+              size_embed.char === null ||
+              size_embed.char === undefined
+            )
+          ) {
             max = size_embed.char;
           }
           let moremax = max + 1;
           let getlessmax = max - 1;
           let lessmax = Math.abs(getlessmax);
           let lines = "────────────────────────";
-          if (!(size_embed.line === null || size_embed.line === undefined)) {
+          if (
+            !(
+              size_embed === null ||
+              size_embed.line === null ||
+              size_embed.line === undefined
+            )
+          ) {
             lines = size_embed.line;
           }
           let title = embed.title;
