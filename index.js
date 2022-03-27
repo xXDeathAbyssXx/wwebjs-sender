@@ -97,17 +97,18 @@ exports.MessageEmbed = class MessageEmbed {
 
   sizeEmbed(px) {
     let embedsize = null;
+    let line_convert = null;
     if (typeof px === "number") {
       if (px > 2 && px < 47) {
         let mathnum = px - 4;
         let fixmath = Math.abs(mathnum);
-        let line_convert = "";
+        line_convert = "";
         for (let i = 0; i < fixmath; i++) {
           line_convert = line_convert + "─";
         }
         embedsize = {
-          char: this.px,
-          line: this.line_convert,
+          char: px,
+          line: line_convert,
         };
       }
     }
@@ -521,7 +522,7 @@ exports.reply = function ({ message, embed }) {
       let down_r = "┘";
       let wall = "│";
       let space = " ";
-      let size_embed = embed.sizeEmbed;
+      let size_embed = embed.px;
       let max = 28;
       if (!(size_embed.char === null || size_embed.char === undefined)) {
         max = size_embed.char;
@@ -856,7 +857,7 @@ exports.send = function ({ client, number, embed, button }) {
           let down_r = "┘";
           let wall = "│";
           let space = " ";
-          let size_embed = embed.sizeEmbed;
+          let size_embed = embed.px;
           let max = 28;
           if (!(size_embed.char === null || size_embed.char === undefined)) {
             max = size_embed.char;
