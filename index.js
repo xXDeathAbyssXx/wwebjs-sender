@@ -528,14 +528,26 @@ exports.reply = function ({ message, embed }) {
       let space = " ";
       let size_embed = embed.px;
       let max = 28;
-      if (!(size_embed.char === null || size_embed.char === undefined)) {
+      if (
+        !(
+          size_embed === null ||
+          size_embed.char === null ||
+          size_embed.char === undefined
+        )
+      ) {
         max = size_embed.char;
       }
       let moremax = max + 1;
       let getlessmax = max - 1;
       let lessmax = Math.abs(getlessmax);
       let lines = "────────────────────────";
-      if (!(size_embed.line === null || size_embed.line === undefined)) {
+      if (
+        !(
+          size_embed === null ||
+          size_embed.line === null ||
+          size_embed.line === undefined
+        )
+      ) {
         lines = size_embed.line;
       }
       let title = embed.title;
@@ -797,7 +809,7 @@ exports.reply = function ({ message, embed }) {
       }
       let timestamp = embed.timestamp;
       if (lentitle > 2) {
-        title = "\n" + title + "\n" + wall + "\n" + lines + wall;
+        title = "\n" + title + "\n" + wall + lines + wall;
       } else {
         title = "";
       }
@@ -808,15 +820,7 @@ exports.reply = function ({ message, embed }) {
 
       if (lenfooter > 2) {
         footer =
-          wall +
-          "\n" +
-          lines +
-          wall +
-          "\n" +
-          fields_embed +
-          footer +
-          timestamp +
-          "\n";
+          wall + lines + wall + "\n" + fields_embed + footer + timestamp + "\n";
       } else {
         footer = "";
       }
@@ -1140,7 +1144,7 @@ exports.send = function ({ client, number, embed, button }) {
           }
           let timestamp = embed.timestamp;
           if (lentitle > 2) {
-            title = "\n" + title + "\n" + wall + "\n" + lines + wall;
+            title = "\n" + title + "\n" + wall + lines + wall;
           } else {
             title = "";
           }
@@ -1461,7 +1465,7 @@ exports.send = function ({ client, number, embed, button }) {
             }
             let timestamp = embed.timestamp;
             if (lentitle > 2) {
-              title = "\n" + title + "\n" + wall + "\n" + lines + wall;
+              title = "\n" + title + "\n" + wall + lines + wall;
             } else {
               title = "";
             }
