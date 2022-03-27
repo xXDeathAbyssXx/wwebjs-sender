@@ -20,6 +20,13 @@ exports.MessageEmbed = class MessageEmbed {
 
   setup(data, skipValidation) {
     /**
+     * The px of this embed
+     * @type {?number}
+     */
+
+    this.px = data.px ?? null;
+
+    /**
      * The title of this embed
      * @type {?string}
      */
@@ -37,8 +44,6 @@ exports.MessageEmbed = class MessageEmbed {
      */
     this.timestamp =
       "timestamp" in data ? new Date(data.timestamp).getTime() : null;
-
-    this.px = data.px ?? null;
 
     /**
      * Represents a field of a MessageEmbed
@@ -72,10 +77,10 @@ exports.MessageEmbed = class MessageEmbed {
    */
   equals(embed) {
     return (
+      this.px === embed.px &&
       this.title === embed.title &&
       this.description === embed.description &&
       this.timestamp === embed.timestamp &&
-      this.px === embed.px &&
       this.fields.length === embed.fields.length &&
       this.fields.every((field, i) =>
         this._fieldEquals(field, embed.fields[i])
@@ -94,6 +99,12 @@ exports.MessageEmbed = class MessageEmbed {
   _fieldEquals(field, other) {
     return field.name === other.name && field.value === other.value;
   }
+
+  /**
+   * Sets the sizeEmbed of this embed.
+   * @param {number} px The footer
+   * @returns {MessageEmbed}
+   */
 
   sizeEmbed(px) {
     let embedsize = null;
@@ -124,7 +135,6 @@ exports.MessageEmbed = class MessageEmbed {
    * Adds a field to the embed (max 25).
    * @param {string} name The name of this field
    * @param {string} value The value of this field
-   * @param {boolean} [inline=false] If this field will be displayed inline
    * @returns {MessageEmbed}
    */
   addField(name, value) {
@@ -147,13 +157,15 @@ exports.MessageEmbed = class MessageEmbed {
    * @returns {MessageEmbed}
    */
   setDescription(description) {
+    this.sizeEmbed();
     let desc_embed = "";
     let max = 28;
     let wall = "│";
     let space = " ";
-
-    let size_embed = this.sizeEmbed();
-
+    let size_embed = this.px;
+    console.log("-----------------------------------------------------");
+    console.log(size_embed); //LEO it here it return null
+    console.log("-----------------------------------------------------");
     if (!(size_embed === null)) {
       max = size_embed.char;
     }
@@ -311,12 +323,14 @@ exports.MessageEmbed = class MessageEmbed {
    * @returns {MessageEmbed}
    */
   setTitle(title) {
+    this.sizeEmbed();
+
     let title_embed = "";
     let max = 28;
     let wall = "│";
     let space = " ";
 
-    let size_embed = this.sizeEmbed();
+    let size_embed = this.px;
 
     if (!(size_embed === null)) {
       max = size_embed.char;
@@ -416,10 +430,10 @@ exports.MessageEmbed = class MessageEmbed {
    */
   toJSON() {
     return {
+      px: this.px,
       title: this.title,
       description: this.description,
       timestamp: this.timestamp && new Date(this.timestamp),
-      px: this.px,
       fields: this.fields,
       footer: this.footer,
     };
