@@ -148,7 +148,7 @@ client.on("message", (msg) => {
       .addField("✔", "To confirm")
       .addField("❌", "To cancel")
       .addFields({
-        name: "Now you have 2 buttons to   choose!",
+        name: "Now you have 2 buttons to choose!",
         value: "✔ or ❌",
       })
       .setFooter("WwebjsSender")
