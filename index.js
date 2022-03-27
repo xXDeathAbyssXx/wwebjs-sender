@@ -38,6 +38,8 @@ exports.MessageEmbed = class MessageEmbed {
     this.timestamp =
       "timestamp" in data ? new Date(data.timestamp).getTime() : null;
 
+    this.sizeEmbed = data.sizeEmbed ?? null;
+
     /**
      * Represents a field of a MessageEmbed
      * @typedef {Object} EmbedField
@@ -73,6 +75,7 @@ exports.MessageEmbed = class MessageEmbed {
       this.title === embed.title &&
       this.description === embed.description &&
       this.timestamp === embed.timestamp &&
+      this.sizeEmbed === embed.sizeEmbed &&
       this.fields.length === embed.fields.length &&
       this.fields.every((field, i) =>
         this._fieldEquals(field, embed.fields[i])
@@ -90,6 +93,23 @@ exports.MessageEmbed = class MessageEmbed {
    */
   _fieldEquals(field, other) {
     return field.name === other.name && field.value === other.value;
+  }
+
+  sizeEmbed(px) {
+    if (typeof px === "number") {
+      if (px > 2 && px < 47) {
+        let mathnum = px - 4;
+        let fixmath = Math.abs(mathnum);
+        let line_convert = "";
+        for (let i = 0; i < fixmath; i++) {
+          line_convert = line_convert + "─";
+        }
+        return {
+          char: this.px,
+          line: this.line_convert,
+        };
+      }
+    }
   }
 
   /**
@@ -124,6 +144,14 @@ exports.MessageEmbed = class MessageEmbed {
     let wall = "│";
     let space = " ";
 
+    let size_embed = this.sizeEmbed();
+
+    if (!(size_embed === null)) {
+      max = size_embed.char;
+    }
+
+    let moremax = max + 1;
+
     if (typeof description === "string") {
       let lenstr = description.length;
 
@@ -135,7 +163,7 @@ exports.MessageEmbed = class MessageEmbed {
 
       if (lenstr > max) {
         let o = lenstr + 1;
-        let parts = 28;
+        let parts = max;
         let parts_count = 0;
         let parts_count_loop = 0;
         let help_loop = false;
@@ -146,7 +174,7 @@ exports.MessageEmbed = class MessageEmbed {
             arr_parts.push(i);
             parts_count++;
             parts_count_loop++;
-            parts = parts + 28;
+            parts = parts + max;
           }
           if (i === lenstr) {
             help_loop = true;
@@ -162,7 +190,7 @@ exports.MessageEmbed = class MessageEmbed {
 
         let arr = [];
         let liceit = 0;
-        let liceitagain = 28;
+        let liceitagain = max;
         let see_final = parts_count_loop - 1;
         for (let i = 0; i < parts_count_loop; i++) {
           if (i === see_final) {
@@ -177,8 +205,8 @@ exports.MessageEmbed = class MessageEmbed {
           let maketheslice = description.slice(liceit, liceitagain);
           let final_result = wall + space + maketheslice;
           arr.push(final_result);
-          liceit = liceit + 28;
-          liceitagain = liceitagain + 28;
+          liceit = liceit + max;
+          liceitagain = liceitagain + max;
         }
         let descarr = "";
         let see_final_arr = arr.length - 1;
@@ -191,8 +219,8 @@ exports.MessageEmbed = class MessageEmbed {
         }
         desc_embed = "\n" + descarr + "\n";
       } else {
-        if (lenstr < 29) {
-          let getspaces = 28 - lenstr;
+        if (lenstr < moremax) {
+          let getspaces = max - lenstr;
           if (getspaces === 0) {
             let spacessums = space;
             for (let i = 0; i < getspaces; i++) {
@@ -276,16 +304,23 @@ exports.MessageEmbed = class MessageEmbed {
    */
   setTitle(title) {
     let title_embed = "";
-
     let max = 28;
     let wall = "│";
     let space = " ";
+
+    let size_embed = this.sizeEmbed();
+
+    if (!(size_embed === null)) {
+      max = size_embed.char;
+    }
+
+    let moremax = max + 1;
 
     if (typeof title === "string") {
       let lenstr = title.length;
       if (lenstr > max) {
         let o = lenstr + 1;
-        let parts = 28;
+        let parts = max;
         let parts_count = 0;
         let parts_count_loop = 0;
         let help_loop = false;
@@ -296,7 +331,7 @@ exports.MessageEmbed = class MessageEmbed {
             arr_parts.push(i);
             parts_count++;
             parts_count_loop++;
-            parts = parts + 28;
+            parts = parts + max;
           }
           if (i === lenstr) {
             help_loop = true;
@@ -312,7 +347,7 @@ exports.MessageEmbed = class MessageEmbed {
 
         let arr = [];
         let liceit = 0;
-        let liceitagain = 28;
+        let liceitagain = max;
         let see_final = parts_count_loop - 1;
         for (let i = 0; i < parts_count_loop; i++) {
           if (i === see_final) {
@@ -327,8 +362,8 @@ exports.MessageEmbed = class MessageEmbed {
           let maketheslice = title.slice(liceit, liceitagain);
           let final_result = wall + space + " *" + maketheslice + "* ";
           arr.push(final_result);
-          liceit = liceit + 28;
-          liceitagain = liceitagain + 28;
+          liceit = liceit + max;
+          liceitagain = liceitagain + max;
         }
         let titlearr = "";
         let see_final_arr = arr.length - 1;
@@ -341,8 +376,8 @@ exports.MessageEmbed = class MessageEmbed {
         }
         title_embed = titlearr;
       } else {
-        if (lenstr < 29) {
-          let getspaces = 28 - lenstr;
+        if (lenstr < moremax) {
+          let getspaces = max - lenstr;
           if (getspaces === 0) {
             let spacessums = space;
             for (let i = 0; i < getspaces; i++) {
@@ -376,6 +411,7 @@ exports.MessageEmbed = class MessageEmbed {
       title: this.title,
       description: this.description,
       timestamp: this.timestamp && new Date(this.timestamp),
+      sizeEmbed: this.sizeEmbed,
       fields: this.fields,
       footer: this.footer,
     };
@@ -482,7 +518,18 @@ exports.reply = function ({ message, embed }) {
       let down_r = "┘";
       let wall = "│";
       let space = " ";
+      let size_embed = embed.sizeEmbed;
       let max = 28;
+      if (!(size_embed.char === null || size_embed.char === undefined)) {
+        max = size_embed.char;
+      }
+      let moremax = max + 1;
+      let getlessmax = max - 1;
+      let lessmax = Math.abs(getlessmax);
+      let lines = "────────────────────────";
+      if (!(size_embed.line === null || size_embed.line === undefined)) {
+        lines = size_embed.line;
+      }
       let title = embed.title;
       let lentitle;
       if (title === null) {
@@ -515,7 +562,7 @@ exports.reply = function ({ message, embed }) {
                 }
                 if (lenstr_name > max) {
                   let o = lenstr_name + 1;
-                  let parts = 28;
+                  let parts = max;
                   let parts_count = 0;
                   let parts_count_loop = 0;
                   let help_loop = false;
@@ -526,7 +573,7 @@ exports.reply = function ({ message, embed }) {
                       arr_parts.push(i);
                       parts_count++;
                       parts_count_loop++;
-                      parts = parts + 28;
+                      parts = parts + max;
                     }
                     if (i === lenstr_name) {
                       help_loop = true;
@@ -542,7 +589,7 @@ exports.reply = function ({ message, embed }) {
 
                   let arr = [];
                   let liceit = 0;
-                  let liceitagain = 28;
+                  let liceitagain = max;
                   let see_final = parts_count_loop - 1;
                   for (let i = 0; i < parts_count_loop; i++) {
                     if (i === see_final) {
@@ -573,8 +620,8 @@ exports.reply = function ({ message, embed }) {
                       final_result = wall + space + maketheslice;
                     }
                     arr.push(final_result);
-                    liceit = liceit + 28;
-                    liceitagain = liceitagain + 28;
+                    liceit = liceit + max;
+                    liceitagain = liceitagain + max;
                   }
                   let fields_namearr = "";
                   let see_final_arr = arr.length - 1;
@@ -587,9 +634,9 @@ exports.reply = function ({ message, embed }) {
                   }
                   fields_name_embed = fields_namearr + "*  |";
                 } else {
-                  if (lenstr_name < 29) {
+                  if (lenstr_name < moremax) {
                     final_count_name = lenstr_name;
-                    let getspaces = 28 - lenstr_name;
+                    let getspaces = max - lenstr_name;
                     if (getspaces === 0) {
                       let spacessums = space;
                       for (let i = 0; i < getspaces; i++) {
@@ -620,7 +667,7 @@ exports.reply = function ({ message, embed }) {
 
                 if (lenstr_value > max) {
                   let o = lenstr_value + 1;
-                  let parts = 28;
+                  let parts = max;
                   let parts_count = 0;
                   let parts_count_loop = 0;
                   let help_loop = false;
@@ -631,7 +678,7 @@ exports.reply = function ({ message, embed }) {
                       arr_parts.push(i);
                       parts_count++;
                       parts_count_loop++;
-                      parts = parts + 28;
+                      parts = parts + max;
                     }
                     if (i === lenstr_value) {
                       help_loop = true;
@@ -647,7 +694,7 @@ exports.reply = function ({ message, embed }) {
 
                   let arr = [];
                   let liceit = 0;
-                  let liceitagain = 28;
+                  let liceitagain = max;
                   let see_final = parts_count_loop - 1;
                   for (let i = 0; i < parts_count_loop; i++) {
                     if (i === see_final) {
@@ -672,8 +719,8 @@ exports.reply = function ({ message, embed }) {
                       final_result = wall + space + maketheslice;
                     }
                     arr.push(final_result);
-                    liceit = liceit + 28;
-                    liceitagain = liceitagain + 28;
+                    liceit = liceit + max;
+                    liceitagain = liceitagain + max;
                   }
                   let fields_valuearr = "";
                   let see_final_arr = arr.length - 1;
@@ -686,9 +733,9 @@ exports.reply = function ({ message, embed }) {
                   }
                   fields_value_embed = fields_valuearr + "\n";
                 } else {
-                  if (lenstr_value < 29) {
+                  if (lenstr_value < moremax) {
                     final_count_value = lenstr_value;
-                    let getspaces = 28 - lenstr_value;
+                    let getspaces = max - lenstr_value;
                     if (getspaces === 0) {
                       let spacessums = space;
                       for (let i = 0; i < getspaces; i++) {
@@ -707,12 +754,12 @@ exports.reply = function ({ message, embed }) {
                   }
                 }
                 let final_count_new_line = final_count_name + final_count_value;
-                if (final_count_new_line < 27) {
+                if (final_count_new_line < lessmax) {
                   fields_embed =
                     fields_embed +
                     fields_value_embed +
                     wall +
-                    "────────────────────────" +
+                    lines +
                     wall +
                     "\n";
                 } else {
@@ -722,7 +769,7 @@ exports.reply = function ({ message, embed }) {
                     wall +
                     fields_value_embed +
                     wall +
-                    "────────────────────────" +
+                    lines +
                     wall +
                     "\n";
                 }
@@ -742,7 +789,7 @@ exports.reply = function ({ message, embed }) {
       }
       let timestamp = embed.timestamp;
       if (lentitle > 2) {
-        title = "\n" + title + "\n" + wall + "────────────────────────" + wall;
+        title = "\n" + title + "\n" + wall + lines + wall;
       } else {
         title = "";
       }
@@ -753,27 +800,20 @@ exports.reply = function ({ message, embed }) {
 
       if (lenfooter > 2) {
         footer =
-          wall +
-          "────────────────────────" +
-          wall +
-          "\n" +
-          fields_embed +
-          footer +
-          timestamp +
-          "\n";
+          wall + lines + wall + "\n" + fields_embed + footer + timestamp + "\n";
       } else {
         footer = "";
       }
 
       result_embed =
         up_l +
-        "────────────────────────" +
+        lines +
         up_r +
         title +
         description +
         footer +
         down_l +
-        "────────────────────────" +
+        lines +
         down_r;
 
       return message.reply(result_embed);
@@ -813,7 +853,18 @@ exports.send = function ({ client, number, embed, button }) {
           let down_r = "┘";
           let wall = "│";
           let space = " ";
+          let size_embed = embed.sizeEmbed;
           let max = 28;
+          if (!(size_embed.char === null || size_embed.char === undefined)) {
+            max = size_embed.char;
+          }
+          let moremax = max + 1;
+          let getlessmax = max - 1;
+          let lessmax = Math.abs(getlessmax);
+          let lines = "────────────────────────";
+          if (!(size_embed.line === null || size_embed.line === undefined)) {
+            lines = size_embed.line;
+          }
           let title = embed.title;
           let lentitle;
           if (title === null) {
@@ -847,7 +898,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                     if (lenstr_name > max) {
                       let o = lenstr_name + 1;
-                      let parts = 28;
+                      let parts = max;
                       let parts_count = 0;
                       let parts_count_loop = 0;
                       let help_loop = false;
@@ -858,7 +909,7 @@ exports.send = function ({ client, number, embed, button }) {
                           arr_parts.push(i);
                           parts_count++;
                           parts_count_loop++;
-                          parts = parts + 28;
+                          parts = parts + max;
                         }
                         if (i === lenstr_name) {
                           help_loop = true;
@@ -874,7 +925,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       let arr = [];
                       let liceit = 0;
-                      let liceitagain = 28;
+                      let liceitagain = max;
                       let see_final = parts_count_loop - 1;
                       for (let i = 0; i < parts_count_loop; i++) {
                         if (i === see_final) {
@@ -900,8 +951,8 @@ exports.send = function ({ client, number, embed, button }) {
                         let final_result =
                           wall + space + " *" + maketheslice + "*";
                         arr.push(final_result);
-                        liceit = liceit + 28;
-                        liceitagain = liceitagain + 28;
+                        liceit = liceit + max;
+                        liceitagain = liceitagain + max;
                       }
                       let fields_namearr = "";
                       let see_final_arr = arr.length - 1;
@@ -914,9 +965,9 @@ exports.send = function ({ client, number, embed, button }) {
                       }
                       fields_name_embed = fields_namearr + "  |";
                     } else {
-                      if (lenstr_name < 29) {
+                      if (lenstr_name < moremax) {
                         final_count_name = lenstr_name;
-                        let getspaces = 28 - lenstr_name;
+                        let getspaces = max - lenstr_name;
                         if (getspaces === 0) {
                           let spacessums = space;
                           for (let i = 0; i < getspaces; i++) {
@@ -947,7 +998,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                     if (lenstr_value > max) {
                       let o = lenstr_value + 1;
-                      let parts = 28;
+                      let parts = max;
                       let parts_count = 0;
                       let parts_count_loop = 0;
                       let help_loop = false;
@@ -958,7 +1009,7 @@ exports.send = function ({ client, number, embed, button }) {
                           arr_parts.push(i);
                           parts_count++;
                           parts_count_loop++;
-                          parts = parts + 28;
+                          parts = parts + max;
                         }
                         if (i === lenstr_value) {
                           help_loop = true;
@@ -974,7 +1025,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       let arr = [];
                       let liceit = 0;
-                      let liceitagain = 28;
+                      let liceitagain = max;
                       let see_final = parts_count_loop - 1;
                       for (let i = 0; i < parts_count_loop; i++) {
                         if (i === see_final) {
@@ -1002,8 +1053,8 @@ exports.send = function ({ client, number, embed, button }) {
                           final_result = wall + space + maketheslice;
                         }
                         arr.push(final_result);
-                        liceit = liceit + 28;
-                        liceitagain = liceitagain + 28;
+                        liceit = liceit + max;
+                        liceitagain = liceitagain + max;
                       }
                       let fields_valuearr = "";
                       let see_final_arr = arr.length - 1;
@@ -1016,9 +1067,9 @@ exports.send = function ({ client, number, embed, button }) {
                       }
                       fields_value_embed = fields_valuearr + "\n";
                     } else {
-                      if (lenstr_value < 29) {
+                      if (lenstr_value < moremax) {
                         final_count_value = lenstr_value;
-                        let getspaces = 28 - lenstr_value;
+                        let getspaces = max - lenstr_value;
                         if (getspaces === 0) {
                           let spacessums = space;
                           for (let i = 0; i < getspaces; i++) {
@@ -1038,12 +1089,12 @@ exports.send = function ({ client, number, embed, button }) {
                     }
                     let final_count_new_line =
                       final_count_name + final_count_value;
-                    if (final_count_new_line < 27) {
+                    if (final_count_new_line < lessmax) {
                       fields_embed =
                         fields_embed +
                         fields_value_embed +
                         wall +
-                        "────────────────────────" +
+                        lines +
                         wall +
                         "\n";
                     } else {
@@ -1053,7 +1104,7 @@ exports.send = function ({ client, number, embed, button }) {
                         wall +
                         fields_value_embed +
                         wall +
-                        "────────────────────────" +
+                        lines +
                         wall +
                         "\n";
                     }
@@ -1073,8 +1124,7 @@ exports.send = function ({ client, number, embed, button }) {
           }
           let timestamp = embed.timestamp;
           if (lentitle > 2) {
-            title =
-              "\n" + title + "\n" + wall + "────────────────────────" + wall;
+            title = "\n" + title + "\n" + wall + lines + wall;
           } else {
             title = "";
           }
@@ -1086,7 +1136,7 @@ exports.send = function ({ client, number, embed, button }) {
           if (lenfooter > 2) {
             footer =
               wall +
-              "────────────────────────" +
+              lines +
               wall +
               "\n" +
               fields_embed +
@@ -1099,13 +1149,13 @@ exports.send = function ({ client, number, embed, button }) {
 
           result_embed =
             up_l +
-            "────────────────────────" +
+            lines +
             up_r +
             title +
             description +
             footer +
             down_l +
-            "────────────────────────" +
+            lines +
             down_r;
 
           return client.sendMessage(number, result_embed);
@@ -1135,7 +1185,7 @@ exports.send = function ({ client, number, embed, button }) {
             let down_r = "┘";
             let wall = "│";
             let space = " ";
-            let max = 28;
+            let max = max;
             let title = embed.title;
             let lentitle;
             if (title === null) {
@@ -1169,7 +1219,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       if (lenstr_name > max) {
                         let o = lenstr_name + 1;
-                        let parts = 28;
+                        let parts = max;
                         let parts_count = 0;
                         let parts_count_loop = 0;
                         let help_loop = false;
@@ -1180,7 +1230,7 @@ exports.send = function ({ client, number, embed, button }) {
                             arr_parts.push(i);
                             parts_count++;
                             parts_count_loop++;
-                            parts = parts + 28;
+                            parts = parts + max;
                           }
                           if (i === lenstr_name) {
                             help_loop = true;
@@ -1196,7 +1246,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                         let arr = [];
                         let liceit = 0;
-                        let liceitagain = 28;
+                        let liceitagain = max;
                         let see_final = parts_count_loop - 1;
                         for (let i = 0; i < parts_count_loop; i++) {
                           if (i === see_final) {
@@ -1220,8 +1270,8 @@ exports.send = function ({ client, number, embed, button }) {
                           );
                           let final_result = wall + space + maketheslice;
                           arr.push(final_result);
-                          liceit = liceit + 28;
-                          liceitagain = liceitagain + 28;
+                          liceit = liceit + max;
+                          liceitagain = liceitagain + max;
                         }
                         let fields_namearr = "";
                         let see_final_arr = arr.length - 1;
@@ -1234,9 +1284,9 @@ exports.send = function ({ client, number, embed, button }) {
                         }
                         fields_name_embed = fields_namearr + "  |";
                       } else {
-                        if (lenstr_name < 29) {
+                        if (lenstr_name < moremax) {
                           final_count_name = lenstr_name;
-                          let getspaces = 28 - lenstr_name;
+                          let getspaces = max - lenstr_name;
                           if (getspaces === 0) {
                             let spacessums = space;
                             for (let i = 0; i < getspaces; i++) {
@@ -1267,7 +1317,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                       if (lenstr_value > max) {
                         let o = lenstr_value + 1;
-                        let parts = 28;
+                        let parts = max;
                         let parts_count = 0;
                         let parts_count_loop = 0;
                         let help_loop = false;
@@ -1278,7 +1328,7 @@ exports.send = function ({ client, number, embed, button }) {
                             arr_parts.push(i);
                             parts_count++;
                             parts_count_loop++;
-                            parts = parts + 28;
+                            parts = parts + max;
                           }
                           if (i === lenstr_value) {
                             help_loop = true;
@@ -1294,7 +1344,7 @@ exports.send = function ({ client, number, embed, button }) {
 
                         let arr = [];
                         let liceit = 0;
-                        let liceitagain = 28;
+                        let liceitagain = max;
                         let see_final = parts_count_loop - 1;
                         for (let i = 0; i < parts_count_loop; i++) {
                           if (i === see_final) {
@@ -1322,8 +1372,8 @@ exports.send = function ({ client, number, embed, button }) {
                             final_result = wall + space + maketheslice;
                           }
                           arr.push(final_result);
-                          liceit = liceit + 28;
-                          liceitagain = liceitagain + 28;
+                          liceit = liceit + max;
+                          liceitagain = liceitagain + max;
                         }
                         let fields_valuearr = "";
                         let see_final_arr = arr.length - 1;
@@ -1336,9 +1386,9 @@ exports.send = function ({ client, number, embed, button }) {
                         }
                         fields_value_embed = fields_valuearr + "\n";
                       } else {
-                        if (lenstr_value < 29) {
+                        if (lenstr_value < moremax) {
                           final_count_value = lenstr_value;
-                          let getspaces = 28 - lenstr_value;
+                          let getspaces = max - lenstr_value;
                           if (getspaces === 0) {
                             let spacessums = space;
                             for (let i = 0; i < getspaces; i++) {
@@ -1358,12 +1408,12 @@ exports.send = function ({ client, number, embed, button }) {
                       }
                       let final_count_new_line =
                         final_count_name + final_count_value;
-                      if (final_count_new_line < 27) {
+                      if (final_count_new_line < lessmax) {
                         fields_embed =
                           fields_embed +
                           fields_value_embed +
                           wall +
-                          "────────────────────────" +
+                          lines +
                           wall +
                           "\n";
                       } else {
@@ -1373,7 +1423,7 @@ exports.send = function ({ client, number, embed, button }) {
                           wall +
                           fields_value_embed +
                           wall +
-                          "────────────────────────" +
+                          lines +
                           wall +
                           "\n";
                       }
@@ -1395,8 +1445,7 @@ exports.send = function ({ client, number, embed, button }) {
             }
             let timestamp = embed.timestamp;
             if (lentitle > 2) {
-              title =
-                "\n" + title + "\n" + wall + "────────────────────────" + wall;
+              title = "\n" + title + "\n" + wall + lines + wall;
             } else {
               title = "";
             }
@@ -1408,7 +1457,7 @@ exports.send = function ({ client, number, embed, button }) {
             if (lenfooter > 2) {
               footer =
                 wall +
-                "────────────────────────" +
+                lines +
                 wall +
                 "\n" +
                 fields_embed +
@@ -1421,13 +1470,13 @@ exports.send = function ({ client, number, embed, button }) {
 
             result_embed =
               up_l +
-              "────────────────────────" +
+              lines +
               up_r +
               title +
               description +
               footer +
               down_l +
-              "────────────────────────" +
+              lines +
               down_r;
 
             client.sendMessage(
