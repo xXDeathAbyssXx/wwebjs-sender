@@ -110,6 +110,10 @@ exports.MessageEmbed = class MessageEmbed {
           char: px,
           line: line_convert,
         };
+      } else {
+        return console.error(
+          `MessageEmbed sizeEmbed string cannot be less than 3 and greater than 47.`
+        );
       }
     }
     this.px = embedsize;
