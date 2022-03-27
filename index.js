@@ -163,9 +163,6 @@ exports.MessageEmbed = class MessageEmbed {
     let wall = "│";
     let space = " ";
     let size_embed = this.px;
-    console.log("-----------------------------------------------------");
-    console.log(size_embed); //LEO it here it return null
-    console.log("-----------------------------------------------------");
     if (!(size_embed === null)) {
       max = size_embed.char;
     }
