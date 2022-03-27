@@ -111,10 +111,8 @@ exports.MessageEmbed = class MessageEmbed {
     let line_convert = null;
     if (typeof px === "number") {
       if (px > 2 && px < 47) {
-        let mathnum = px - 2;
-        let fixmath = Math.abs(mathnum);
         line_convert = "";
-        for (let i = 0; i < fixmath; i++) {
+        for (let i = 0; i < px; i++) {
           line_convert = line_convert + "─";
         }
         embedsize = {
