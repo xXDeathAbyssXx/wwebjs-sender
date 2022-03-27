@@ -8,6 +8,7 @@ const Util = require("./util/Util");
 exports.MessageEmbed = class MessageEmbed {
   /**
    * Represents the possible options for a MessageEmbed
+   * @property {number} [px] The size in pixel of this embed
    * @property {string} [title] The title of this embed
    * @property {string} [description] The description of this embed
    * @property {string} [footer] The footer of this embed
@@ -20,7 +21,7 @@ exports.MessageEmbed = class MessageEmbed {
 
   setup(data, skipValidation) {
     /**
-     * The px of this embed
+     * The size in pixel of this embed
      * @type {?number}
      */
 
@@ -101,14 +102,22 @@ exports.MessageEmbed = class MessageEmbed {
   }
 
   /**
-   * Sets the sizeEmbed of this embed.
-   * @param {number} px The footer
+   * Sets The size in pixel of this embed.
+   * @param {number} px The pixels
    * @returns {MessageEmbed}
    */
 
   sizeEmbed(px) {
-    let embedsize = null;
-    let line_convert = null;
+    if (px == undefined) {
+      let nopx = {
+        char: null,
+        line: null,
+      };
+      this.px = nopx;
+      return this;
+    }
+    let embedsize;
+    let line_convert;
     if (typeof px === "number") {
       if (px > 2 && px < 47) {
         line_convert = "";
@@ -130,7 +139,7 @@ exports.MessageEmbed = class MessageEmbed {
   }
 
   /**
-   * Adds a field to the embed (max 25).
+   * Adds a field to the embed.
    * @param {string} name The name of this field
    * @param {string} value The value of this field
    * @returns {MessageEmbed}
@@ -140,7 +149,7 @@ exports.MessageEmbed = class MessageEmbed {
   }
 
   /**
-   * Adds fields to the embed (max 25).
+   * Adds fields to the embed.
    * @param {...EmbedFieldData|EmbedFieldData[]} fields The fields to add
    * @returns {MessageEmbed}
    */
@@ -161,10 +170,9 @@ exports.MessageEmbed = class MessageEmbed {
     let wall = "│";
     let space = " ";
     let size_embed = this.px;
-    if (!(size_embed === null)) {
+    if (!(size_embed.char === null || size_embed.line === null)) {
       max = size_embed.char;
     }
-
     let moremax = max + 1;
 
     if (typeof description === "string") {
@@ -319,15 +327,12 @@ exports.MessageEmbed = class MessageEmbed {
    */
   setTitle(title) {
     this.sizeEmbed();
-
     let title_embed = "";
     let max = 28;
     let wall = "│";
     let space = " ";
-
     let size_embed = this.px;
-
-    if (!(size_embed === null)) {
+    if (!(size_embed.char === null || size_embed.line === null)) {
       max = size_embed.char;
     }
 
