@@ -38,7 +38,7 @@ exports.MessageEmbed = class MessageEmbed {
     this.timestamp =
       "timestamp" in data ? new Date(data.timestamp).getTime() : null;
 
-    this.sizeEmbed = data.sizeEmbed ?? null;
+    this.px = data.px ?? null;
 
     /**
      * Represents a field of a MessageEmbed
@@ -75,7 +75,7 @@ exports.MessageEmbed = class MessageEmbed {
       this.title === embed.title &&
       this.description === embed.description &&
       this.timestamp === embed.timestamp &&
-      this.sizeEmbed === embed.sizeEmbed &&
+      this.px === embed.px &&
       this.fields.length === embed.fields.length &&
       this.fields.every((field, i) =>
         this._fieldEquals(field, embed.fields[i])
@@ -96,6 +96,7 @@ exports.MessageEmbed = class MessageEmbed {
   }
 
   sizeEmbed(px) {
+    let embedsize = null;
     if (typeof px === "number") {
       if (px > 2 && px < 47) {
         let mathnum = px - 4;
@@ -104,12 +105,14 @@ exports.MessageEmbed = class MessageEmbed {
         for (let i = 0; i < fixmath; i++) {
           line_convert = line_convert + "─";
         }
-        return {
+        embedsize = {
           char: this.px,
           line: this.line_convert,
         };
       }
     }
+    this.px = embedsize;
+    return this;
   }
 
   /**
@@ -411,7 +414,7 @@ exports.MessageEmbed = class MessageEmbed {
       title: this.title,
       description: this.description,
       timestamp: this.timestamp && new Date(this.timestamp),
-      sizeEmbed: this.sizeEmbed,
+      px: this.px,
       fields: this.fields,
       footer: this.footer,
     };
