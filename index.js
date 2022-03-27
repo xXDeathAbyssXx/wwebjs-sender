@@ -107,8 +107,8 @@ exports.MessageEmbed = class MessageEmbed {
    */
 
   sizeEmbed(px) {
-    let embedsize = null;
-    let line_convert = null;
+    let embedsize = "the defaut";
+    let line_convert = "the default";
     if (typeof px === "number") {
       if (px > 2 && px < 47) {
         let mathnum = px - 4;
@@ -121,6 +121,8 @@ exports.MessageEmbed = class MessageEmbed {
           char: px,
           line: line_convert,
         };
+        this.px = embedsize;
+        return this;
       } else {
         return console.error(
           `MessageEmbed sizeEmbed string cannot be less than 3 and greater than 47.`
