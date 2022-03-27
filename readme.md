@@ -142,6 +142,7 @@ client.on("message", (msg) => {
   if (msg.body == "!command") {
     const { from } = msg;
     let embed = new WwebjsSender.MessageEmbed()
+      .sizeEmbed(28)
       .setTitle("✅ | Successful process!")
       .setDescription("The process has been successful!")
       .addField("✔", "To confirm")
@@ -187,6 +188,7 @@ client.initialize();
 
 ```js
 let embed = new MessageEmbed() //Call the constructor MessageEmbed
+  .sizeEmbed(28) //Set horizontal size of the embed in pixel [optional] [default 28 pixels]
   .setTitle("Title") //Set a title for the embed [optional]
   .setDescription("Description") //Set a description for the embed [required]
   .setFooter("Footer") //Set a footer for the embed [optional]
