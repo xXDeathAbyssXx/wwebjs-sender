@@ -507,7 +507,7 @@ exports.reply = function ({ message, embed }) {
                 let lenstr_value = fields_value.length;
                 let final_count_name = 0;
                 let final_count_value = 0;
-
+                let value_wall_fix = 0;
                 if (lenstr_name < 1) {
                   return console.error(
                     "MessageEmbed name of field must be non-empty strings."
@@ -659,12 +659,18 @@ exports.reply = function ({ message, embed }) {
                         fix_last
                       );
                       final_count_value = maketheslicefix.length;
-                      let final_result = space + maketheslicefix;
+                      let final_result = wall + space + maketheslicefix;
                       arr.push(final_result);
                       break;
                     }
                     let maketheslice = fields_value.slice(liceit, liceitagain);
-                    let final_result = space + maketheslice;
+                    let final_result;
+                    if (value_wall_fix === 0) {
+                      final_result = space + maketheslice;
+                      value_wall_fix++;
+                    } else {
+                      final_result = wall + space + maketheslice;
+                    }
                     arr.push(final_result);
                     liceit = liceit + 28;
                     liceitagain = liceitagain + 28;
@@ -832,7 +838,7 @@ exports.send = function ({ client, number, embed, button }) {
                     let lenstr_value = fields_value.length;
                     let final_count_name = 0;
                     let final_count_value = 0;
-
+                    let value_wall_fix = 0;
                     if (lenstr_name < 1) {
                       return console.error(
                         "MessageEmbed name of field must be non-empty strings."
@@ -980,7 +986,7 @@ exports.send = function ({ client, number, embed, button }) {
                             fix_last
                           );
                           final_count_value = maketheslicefix.length;
-                          let final_result = space + maketheslicefix;
+                          let final_result = wall + space + maketheslicefix;
                           arr.push(final_result);
                           break;
                         }
@@ -988,7 +994,13 @@ exports.send = function ({ client, number, embed, button }) {
                           liceit,
                           liceitagain
                         );
-                        let final_result = space + maketheslice;
+                        let final_result;
+                        if (value_wall_fix === 0) {
+                          final_result = space + maketheslice;
+                          value_wall_fix++;
+                        } else {
+                          final_result = wall + space + maketheslice;
+                        }
                         arr.push(final_result);
                         liceit = liceit + 28;
                         liceitagain = liceitagain + 28;
@@ -1148,7 +1160,7 @@ exports.send = function ({ client, number, embed, button }) {
                       let lenstr_value = fields_value.length;
                       let final_count_name = 0;
                       let final_count_value = 0;
-
+                      let value_wall_fix = 0;
                       if (lenstr_name < 1) {
                         return console.error(
                           "MessageEmbed name of field must be non-empty strings."
@@ -1294,7 +1306,7 @@ exports.send = function ({ client, number, embed, button }) {
                               fix_last
                             );
                             final_count_value = maketheslicefix.length;
-                            let final_result = space + maketheslicefix;
+                            let final_result = wall + space + maketheslicefix;
                             arr.push(final_result);
                             break;
                           }
@@ -1302,7 +1314,13 @@ exports.send = function ({ client, number, embed, button }) {
                             liceit,
                             liceitagain
                           );
-                          let final_result = space + maketheslice;
+                          let final_result;
+                          if (value_wall_fix === 0) {
+                            final_result = space + maketheslice;
+                            value_wall_fix++;
+                          } else {
+                            final_result = wall + space + maketheslice;
+                          }
                           arr.push(final_result);
                           liceit = liceit + 28;
                           liceitagain = liceitagain + 28;
