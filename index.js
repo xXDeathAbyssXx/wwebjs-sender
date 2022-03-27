@@ -127,8 +127,6 @@ exports.MessageEmbed = class MessageEmbed {
         );
       }
     }
-    this.px = embedsize;
-    return this;
   }
 
   /**
