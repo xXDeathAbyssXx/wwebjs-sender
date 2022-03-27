@@ -120,7 +120,7 @@ exports.MessageEmbed = class MessageEmbed {
     let line_convert;
     if (typeof px === "number") {
       if (px > 2 && px < 47) {
-        let mathnum = px - 2;
+        let mathnum = px - 4;
         let fixmath = Math.abs(mathnum);
         line_convert = "";
         for (let i = 0; i < fixmath; i++) {

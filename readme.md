@@ -63,6 +63,54 @@ yarn add whatsapp-web.js
 
 </p></details></td></tr></table>
 
+## Update 🔁
+
+<table><tr><td colspan="3">
+
+Update the package @deathabyss/wwebjs-sender with npm or yarn
+
+</td></tr><tr><td valign="top">
+
+<details><summary> npm </summary><p>
+
+```bash
+npm r @deathabyss/wwebjs-sender && npm i @deathabyss/wwebjs-sender
+```
+
+</p></details></td><td valign="top">
+
+<details><summary> yarn </summary><p>
+
+```bash
+yarn remove @deathabyss/wwebjs-sender && yarn add @deathabyss/wwebjs-sender
+```
+
+</p></details></td></tr></table>
+
+<br>
+
+<table><tr><td colspan="3">
+
+Update the package whatsapp-web.js with npm or yarn
+
+</td></tr><tr><td valign="top">
+
+<details><summary> npm </summary><p>
+
+```bash
+npm r whatsapp-web.js && npm i whatsapp-web.js
+```
+
+</p></details></td><td valign="top">
+
+<details><summary> yarn </summary><p>
+
+```bash
+yarn remove whatsapp-web.js && yarn add whatsapp-web.js
+```
+
+</p></details></td></tr></table>
+
 ---
 
 ## ✨ Features:
