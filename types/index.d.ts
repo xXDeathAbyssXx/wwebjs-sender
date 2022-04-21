@@ -169,7 +169,7 @@ export class Collector extends EventEmitter {
     public constructor(
         client: Client,
         chat: Chat,
-        time: string,
+        time: number,
         number: string,
         embed: MessageEmbed[],
         max: number[],

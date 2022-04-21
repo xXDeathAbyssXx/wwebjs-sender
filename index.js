@@ -3,6 +3,7 @@ const isPhone = require("is-phone");
 const Util = require("./util/Util");
 const { awaitMessage, eesend } = require("./util/functions");
 const EventEmitter = require("events");
+const { eError, tError, rError, sError, rfError } = require("./util/throw");
 
 /**
  * Represents an embed in a message with strings ascii design
@@ -1579,12 +1580,12 @@ exports.Collector = class Collector extends EventEmitter {
   /**
    * Represents the possible options for a MessageEmbed
    * @property {object} [client] The client to use
-   * @property {object} [chat] The chat to send the message
-   * @property {string} [time] The time to wait
-   * @property {string} [number] The number to collect
-   * @property {object[]} [embed] The MessageEmbed to send a message
+   * @property {object} [chat] The chat to use
+   * @property {number} [time] The time to wait for a message to be received
+   * @property {string} [number] The number to send the message
+   * @property {object[]} [embed] The MessageEmbed/s to send
    * @property {number[]} [max] The max character per question
-   * @property {(string|string[])} [question] The question/s to send to the user
+   * @property {(string|string[])} [question] The question/s to send
    */
 
   constructor({ client, chat, time, number, embed, max, question }) {
@@ -1603,6 +1604,10 @@ exports.Collector = class Collector extends EventEmitter {
     let chat = this.chat;
     let time = this.time;
 
+    if (typeof client !== "object") return tError("Client must be an object.");
+    if (typeof chat !== "object") return tError("Chat must be an object.");
+    if (typeof time !== "number") return tError("Time must be a number.");
+
     let message = await awaitMessage(client, time, chat);
 
     if (message) {
@@ -1612,6 +1617,26 @@ exports.Collector = class Collector extends EventEmitter {
   }
 
   async messageQuestionCollcetor() {
+    if (typeof this.client !== "object")
+      return tError("Client must be an object.");
+    if (typeof this.chat !== "object") return tError("Chat must be an object.");
+    if (typeof this.time !== "number") return tError("Time must be a number.");
+    if (typeof this.number !== "string")
+      return tError("Number must be a string.");
+    let checkisreal = this.number.split("@");
+    let checknumber = checkisreal[0];
+    let checkid = checkisreal[1];
+    let checknumbernpm = isPhone(checknumber);
+    if (checknumbernpm === false) {
+      throw new TypeError("You must pass a valid number");
+    }
+    if (!(checkid === "c.us")) {
+      throw new TypeError("You must pass a valid number");
+    }
+    if (typeof this.max !== "number") return tError("Max must be a number.");
+    if (typeof this.question !== "string" && typeof this.question !== "object")
+      return tError("Question must be a string or an object.");
+
     let i = 0;
 
     let arraytoresult = [];
@@ -1681,6 +1706,26 @@ exports.Collector = class Collector extends EventEmitter {
   }
 
   async embedQuestionCollcetor() {
+    if (typeof this.client !== "object")
+      return tError("Client must be an object.");
+    if (typeof this.chat !== "object") return tError("Chat must be an object.");
+    if (typeof this.time !== "number") return tError("Time must be a number.");
+    if (typeof this.number !== "string")
+      return tError("Number must be a string.");
+    let checkisreal = this.number.split("@");
+    let checknumber = checkisreal[0];
+    let checkid = checkisreal[1];
+    let checknumbernpm = isPhone(checknumber);
+    if (checknumbernpm === false) {
+      throw new TypeError("You must pass a valid number");
+    }
+    if (!(checkid === "c.us")) {
+      throw new TypeError("You must pass a valid number");
+    }
+    if (typeof this.embed !== "object")
+      return tError("Embed must be an object.");
+    if (typeof this.max !== "number") return tError("Max must be a number.");
+
     let i = 0;
 
     let arraytoresult = [];
