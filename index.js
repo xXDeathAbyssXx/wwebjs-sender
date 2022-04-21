@@ -1587,7 +1587,7 @@ exports.Collector = class Collector extends EventEmitter {
    * @property {(string|string[])} [question] The question/s to send to the user
    */
 
-  constructor(client, chat, time, number, embed, max, question) {
+  constructor({ client, chat, time, number, embed, max, question }) {
     super();
     this.client = client;
     this.chat = chat;
