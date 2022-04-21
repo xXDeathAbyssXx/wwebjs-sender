@@ -1,6 +1,8 @@
 const { Buttons } = require("whatsapp-web.js");
 const isPhone = require("is-phone");
 const Util = require("./util/Util");
+const { awaitMessage } = require("./util/functions");
+const EventEmitter = require("events");
 
 /**
  * Represents an embed in a message with strings ascii design
@@ -16,10 +18,10 @@ exports.MessageEmbed = class MessageEmbed {
    */
 
   constructor(data = {}, skipValidation = false) {
-    this.setup(data, skipValidation);
+    this.#setup(data, skipValidation);
   }
 
-  setup(data, skipValidation) {
+  #setup(data, skipValidation) {
     /**
      * The size in pixel of this embed
      * @type {?number}
@@ -41,7 +43,7 @@ exports.MessageEmbed = class MessageEmbed {
 
     /**
      * The timestamp of this embed
-     * @type {?number}
+     * @type {?number | ?string | ?Date}
      */
     this.timestamp =
       "timestamp" in data ? new Date(data.timestamp).getTime() : null;
@@ -133,7 +135,7 @@ exports.MessageEmbed = class MessageEmbed {
         this.px = embedsize;
         return this;
       } else {
-        return console.error(
+        throw new RangeError(
           `MessageEmbed sizeEmbed string cannot be less than 3 and greater than 47.`
         );
       }
@@ -181,7 +183,7 @@ exports.MessageEmbed = class MessageEmbed {
       let lenstr = description.length;
 
       if (lenstr < 1) {
-        return console.error(
+        throw new TypeError(
           "MessageEmbed description must be non-empty strings."
         );
       }
@@ -264,7 +266,7 @@ exports.MessageEmbed = class MessageEmbed {
         }
       }
     } else {
-      return console.error("MessageEmbed description must be a string.");
+      throw new TypeError("MessageEmbed description must be a string.");
     }
 
     this.description = desc_embed;
@@ -284,14 +286,14 @@ exports.MessageEmbed = class MessageEmbed {
       let lenstr = footer.length;
 
       if (lenstr > 20) {
-        return console.error(
+        throw new RangeError(
           `MessageEmbed footer string cannot be greater than 20.`
         );
       } else {
         footer_embed = wall + space + "```" + footer + "```";
       }
     } else {
-      return console.error("MessageEmbed footer must be a string.");
+      throw new TypeError("MessageEmbed footer must be a string.");
     }
 
     this.footer = footer_embed;
@@ -301,7 +303,7 @@ exports.MessageEmbed = class MessageEmbed {
   /**
    * Sets the timestamp of this embed.
    * @param {*} [timestamp=Date.now()] The timestamp or date.
-   * If `null` then the timestamp will be unset (i.e. when editing an existing {@link MessageEmbed})
+   * If `undefined` then the timestamp will be unset (i.e. when editing an existing {@link MessageEmbed})
    * @returns {MessageEmbed}
    */
   setTimestamp(timestamp) {
@@ -420,7 +422,7 @@ exports.MessageEmbed = class MessageEmbed {
         }
       }
     } else {
-      return console.error("MessageEmbed title must be a string.");
+      throw new TypeError("MessageEmbed title must be a string.");
     }
     this.title = title_embed;
     return this;
@@ -469,7 +471,7 @@ exports.MessageEmbed = class MessageEmbed {
 /**
  * Represents an button object to set in a sendMessage method
  */
-exports.MessageButton = function () {
+exports.MessageButton = class MessageButton {
   /**
    * A `Partial` object is a representation of any existing object.
    * This object contains between 0 and all of the original objects parameters.
@@ -483,44 +485,46 @@ exports.MessageButton = function () {
    * @property {string} [label] The label of this button
    */
 
-  let id;
-  let label;
-  let id_btn = "";
-  let label_btn = "";
+  constructor(id, label) {
+    this.id = id;
+    this.label = label;
+    this.id_btn = "";
+    this.label_btn = "";
+  }
 
-  return {
-    /**
-     * Sets the custom id of this button.
-     * @param {string} id The custom id of the button
-     * @returns {MessageButton}
-     */
-    setCustomId: function (id) {
-      if (typeof id === "string") {
-        id_btn = id;
-      } else {
-        return console.error("MessageButton id must be a string.");
-      }
-      this.id = id_btn;
-      return this;
-    },
-    /**
-     * Sets the label of this button.
-     * @param {string} label The label of the button
-     * @returns {MessageButton}
-     */
-    setLabel: function (label) {
-      if (typeof label === "string") {
-        label_btn = label;
-      } else {
-        return console.error("MessageButton label must be a string.");
-      }
-      this.label = label_btn;
-      return this;
-    },
-    build: function () {
-      return new MessageButton(id, label);
-    },
-  };
+  /**
+   * Sets the custom id of this button.
+   * @param {string} id The custom id of the button
+   * @returns {MessageButton}
+   */
+  setCustomId(id) {
+    if (typeof id === "string") {
+      id_btn = id;
+    } else {
+      throw new TypeError("MessageButton id must be a string.");
+    }
+    this.id = id_btn;
+    return this;
+  }
+
+  /**
+   * Sets the label of this button.
+   * @param {string} label The label of the button
+   * @returns {MessageButton}
+   */
+  setLabel(label) {
+    if (typeof label === "string") {
+      label_btn = label;
+    } else {
+      throw new TypeError("MessageButton label must be a string.");
+    }
+    this.label = label_btn;
+    return this;
+  }
+
+  build() {
+    return new MessageButton(id, label);
+  }
 };
 
 /**
@@ -577,7 +581,7 @@ exports.reply = function ({ message, embed }) {
       }
       let description = embed.description;
       if (description === null) {
-        return console.error("MessageEmbed need description to work.");
+        throw new TypeError("MessageEmbed need description to work.");
       }
       let fields = embed.fields;
       if (!(fields === null)) {
@@ -594,7 +598,7 @@ exports.reply = function ({ message, embed }) {
                 let final_count_value = 0;
                 let value_wall_fix = 0;
                 if (lenstr_name < 1) {
-                  return console.error(
+                  throw new TypeError(
                     "MessageEmbed name of field must be non-empty strings."
                   );
                 }
@@ -698,7 +702,7 @@ exports.reply = function ({ message, embed }) {
                 fields_embed = fields_embed + fields_name_embed;
 
                 if (lenstr_value < 1) {
-                  return console.error(
+                  throw new TypeError(
                     "MessageEmbed value of field must be non-empty strings."
                   );
                 }
@@ -813,7 +817,7 @@ exports.reply = function ({ message, embed }) {
                 }
               }
             } else {
-              return console.error("MessageEmbed fields must be a array.");
+              throw new TypeError("MessageEmbed fields must be a array.");
             }
           }
         }
@@ -874,10 +878,10 @@ exports.send = function ({ client, number, embed, button }) {
       let checkid = checkisreal[1];
       let checknumbernpm = isPhone(checknumber);
       if (checknumbernpm === false) {
-        return console.error("You must pass a valid number");
+        throw new TypeError("You must pass a valid number");
       }
       if (!(checkid === "c.us")) {
-        return console.error("You must pass a valid number");
+        throw new TypeError("You must pass a valid number");
       }
       if (button === null || button === undefined || button.length === 0) {
         if (typeof embed === "object") {
@@ -926,7 +930,7 @@ exports.send = function ({ client, number, embed, button }) {
           }
           let description = embed.description;
           if (description === null) {
-            return console.error("MessageEmbed need description to work.");
+            throw new TypeError("MessageEmbed need description to work.");
           }
           let fields = embed.fields;
           if (!(fields === null)) {
@@ -943,7 +947,7 @@ exports.send = function ({ client, number, embed, button }) {
                     let final_count_value = 0;
                     let value_wall_fix = 0;
                     if (lenstr_name < 1) {
-                      return console.error(
+                      throw new TypeError(
                         "MessageEmbed name of field must be non-empty strings."
                       );
                     }
@@ -1043,7 +1047,7 @@ exports.send = function ({ client, number, embed, button }) {
                     fields_embed = fields_embed + fields_name_embed;
 
                     if (lenstr_value < 1) {
-                      return console.error(
+                      throw new TypeError(
                         "MessageEmbed value of field must be non-empty strings."
                       );
                     }
@@ -1162,7 +1166,7 @@ exports.send = function ({ client, number, embed, button }) {
                     }
                   }
                 } else {
-                  return console.error("MessageEmbed fields must be a array.");
+                  throw new TypeError("MessageEmbed fields must be a array.");
                 }
               }
             }
@@ -1214,8 +1218,8 @@ exports.send = function ({ client, number, embed, button }) {
         }
       } else {
         if (typeof button === "object") {
-          if (button.length === null) {
-            return console.error("Button/s can only be passed by array.");
+          if (Array.isArray(button) === false) {
+            throw new TypeError("Button/s can only be passed by array.");
           }
           let buttonlen = button.length;
           let buttonarray = [];
@@ -1272,7 +1276,7 @@ exports.send = function ({ client, number, embed, button }) {
             }
             let description = embed.description;
             if (description === null) {
-              return console.error("MessageEmbed need description to work.");
+              throw new TypeError("MessageEmbed need description to work.");
             }
             let fields = embed.fields;
             if (!(fields === null)) {
@@ -1289,7 +1293,7 @@ exports.send = function ({ client, number, embed, button }) {
                       let final_count_value = 0;
                       let value_wall_fix = 0;
                       if (lenstr_name < 1) {
-                        return console.error(
+                        throw new TypeError(
                           "MessageEmbed name of field must be non-empty strings."
                         );
                       }
@@ -1387,7 +1391,7 @@ exports.send = function ({ client, number, embed, button }) {
                       fields_embed = fields_embed + fields_name_embed;
 
                       if (lenstr_value < 1) {
-                        return console.error(
+                        throw new TypeError(
                           "MessageEmbed value of field must be non-empty strings."
                         );
                       }
@@ -1506,9 +1510,7 @@ exports.send = function ({ client, number, embed, button }) {
                       }
                     }
                   } else {
-                    return console.error(
-                      "MessageEmbed fields must be a array."
-                    );
+                    throw new TypeError("MessageEmbed fields must be a array.");
                   }
                 }
               }
@@ -1566,5 +1568,187 @@ exports.send = function ({ client, number, embed, button }) {
         }
       }
     }
+  }
+};
+
+/**
+ * Represents an Message Collector.
+ */
+
+exports.Collector = class Collector extends EventEmitter {
+  /**
+   * Represents the possible options for a MessageEmbed
+   * @property {object} [client] The client to use
+   * @property {object} [chat] The chat to send the message
+   * @property {string} [time] The time to wait
+   * @property {string} [number] The number to collect
+   * @property {object} [embed] The MessageEmbed to send a message
+   * @property {number} [max] The max character per question
+   * @property {(string|string[])} [question] The question/s to send to the user
+   */
+
+  constructor(client, chat, time, number, embed, max, question) {
+    this.client = client;
+    this.chat = chat;
+    this.time = time;
+    this.number = number;
+    this.embed = embed;
+    this.max = max;
+    this.question = question;
+  }
+
+  async start() {
+    let client = this.client;
+    let chat = this.chat;
+    let time = this.time;
+
+    let message = await awaitMessage(client, time, chat);
+
+    if (message) {
+      this.emit("mesage", message);
+    }
+  }
+
+  async messageQuestionCollcetor() {
+    let i = 0;
+
+    let arraytoresult = [];
+
+    while (this.question[i]) {
+      let moremax = this.max[i] + 1;
+
+      await this.chat.sendMessage(`${this.question[i]}`);
+
+      let array = await awaitMessage(this.client, this.time, this.number);
+
+      if (array) {
+        let result_array = array.body;
+
+        let resultenmin = result_array.toLowerCase();
+        if (resultenmin === "cancel" || resultenmin === "stop") {
+          return array.reply(
+            `✅ | You has been successfully canceled the process.`
+          );
+        }
+
+        if (result_array.length > this.max[i]) {
+          let shsx5;
+          let sua5 = "a";
+
+          while (true) {
+            await this.chat.sendMessage(
+              `❌ |  You sent more than ${this.max[i]} characters, please try again.`
+            );
+
+            let array_while = await awaitMessage(
+              this.client,
+              this.time,
+              this.number
+            );
+
+            if (array_while) {
+              let result_array_while = array_while.body;
+
+              if (resultenmin === "cancel" || resultenmin === "stop") {
+                return array_while.reply(
+                  `✅ | You has been successfully canceled the process.`
+                );
+              }
+
+              if (result_array_while.length < moremax) {
+                shsx5 = result_array_while;
+
+                sua5 = "e";
+
+                break;
+              }
+            }
+          }
+
+          if (sua5 === "e") {
+            result_array = shsx5;
+          }
+        }
+
+        arraytoresult.push(result_array);
+      }
+      i++;
+    }
+
+    return arraytoresult;
+  }
+
+  async embedQuestionCollcetor() {
+    let i = 0;
+
+    let arraytoresult = [];
+
+    while (this.embed[i]) {
+      let moremax = this.max[i] + 1;
+
+      await send({
+        client: this.client,
+        number: this.number,
+        embed: this.embed[i],
+      });
+
+      let array = await awaitMessage(this.client, this.time, this.number);
+
+      if (array) {
+        let result_array = array.body;
+
+        let resultenmin = result_array.toLowerCase();
+        if (resultenmin === "cancel" || resultenmin === "stop") {
+          return array.reply(
+            `✅ | You has been successfully canceled the process.`
+          );
+        }
+
+        if (result_array.length > this.max[i]) {
+          let shsx5;
+          let sua5 = "a";
+
+          while (true) {
+            await this.chat.sendMessage(
+              `❌ |  You sent more than ${this.max[i]} characters, please try again.`
+            );
+
+            let array_while = await awaitMessage(
+              this.client,
+              this.time,
+              this.number
+            );
+
+            if (array_while) {
+              let result_array_while = array_while.body;
+
+              let resultenmin_while = result_array_while.toLowerCase();
+
+              if (resultenmin === "cancel" || resultenmin === "stop") {
+                return array_while.reply(
+                  `✅ | You has been successfully canceled the process.`
+                );
+              }
+
+              if (result_array_while.length < moremax) {
+                shsx5 = result_array_while;
+
+                sua5 = "e";
+
+                break;
+              }
+            }
+          }
+
+          if (sua5 === "e") {
+            result_array = shsx5;
+          }
+        }
+
+        arraytoresult.push(result_array);
+      }
+      i++;
+    }
+    return arraytoresult;
   }
 };
