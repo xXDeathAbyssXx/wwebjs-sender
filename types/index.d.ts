@@ -171,8 +171,8 @@ export class Collector extends EventEmitter {
         chat: Chat,
         time: string,
         number: string,
-        embed: MessageEmbed,
-        max: number,
+        embed: MessageEmbed[],
+        max: number[],
         question: string | string[]
     );
 

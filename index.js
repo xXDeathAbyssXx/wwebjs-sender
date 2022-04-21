@@ -1582,8 +1582,8 @@ exports.Collector = class Collector extends EventEmitter {
    * @property {object} [chat] The chat to send the message
    * @property {string} [time] The time to wait
    * @property {string} [number] The number to collect
-   * @property {object} [embed] The MessageEmbed to send a message
-   * @property {number} [max] The max character per question
+   * @property {object[]} [embed] The MessageEmbed to send a message
+   * @property {number[]} [max] The max character per question
    * @property {(string|string[])} [question] The question/s to send to the user
    */
 
@@ -1687,11 +1687,7 @@ exports.Collector = class Collector extends EventEmitter {
     while (this.embed[i]) {
       let moremax = this.max[i] + 1;
 
-      await send({
-        client: this.client,
-        number: this.number,
-        embed: this.embed[i],
-      });
+      await this.client.sendMessage(this.number, this.embed[i]);
 
       let array = await awaitMessage(this.client, this.time, this.number);
 
