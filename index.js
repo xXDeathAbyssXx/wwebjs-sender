@@ -1713,7 +1713,7 @@ exports.Collector = class Collector extends EventEmitter {
     return arraytoresult;
   }
 
-  async embedQuestionCollcetor() {
+  async embedQuestionCollector() {
     if (typeof this.client !== "object")
       return tError("Client must be an object.");
     if (typeof this.chat !== "object") return tError("Chat must be an object.");
