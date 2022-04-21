@@ -1633,9 +1633,17 @@ exports.Collector = class Collector extends EventEmitter {
     if (!(checkid === "c.us")) {
       throw new TypeError("You must pass a valid number");
     }
-    if (typeof this.max !== "number") return tError("Max must be a number.");
-    if (typeof this.question !== "object")
-      return tError("Question must be a string or an object.");
+    if (!Array.isArray(this.max)) return tError("Max must be an array.");
+    for (let num in this.max) {
+      if (typeof this.max[num] !== "number")
+        return tError("The type of the max array must be a number.");
+    }
+    if (!Array.isArray(this.question))
+      return tError("Question must be an array.");
+    for (let str in this.question) {
+      if (typeof this.question[str] !== "string")
+        return tError("The type of the question array must be a string.");
+    }
 
     let i = 0;
 
@@ -1722,9 +1730,18 @@ exports.Collector = class Collector extends EventEmitter {
     if (!(checkid === "c.us")) {
       throw new TypeError("You must pass a valid number");
     }
-    if (typeof this.embed !== "object")
-      return tError("Embed must be an object.");
-    if (typeof this.max !== "number") return tError("Max must be a number.");
+
+    if (!Array.isArray(this.max)) return tError("Max must be an array.");
+    for (let num in this.max) {
+      if (typeof this.max[num] !== "number")
+        return tError("The type of the max array must be a number.");
+    }
+
+    if (!Array.isArray(this.embed)) return tError("Embed must be an array.");
+    for (let obj in this.embed) {
+      if (typeof this.embed[obj] !== "object")
+        return tError("The type of the embed array must be an object.");
+    }
 
     let i = 0;
 
