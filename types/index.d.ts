@@ -173,7 +173,7 @@ export class Collector extends EventEmitter {
         number: string,
         embed: MessageEmbed[],
         max: number[],
-        question: string | string[]
+        question: string[]
     );
 
     public initialize(): Promise<void>;

@@ -1585,7 +1585,7 @@ exports.Collector = class Collector extends EventEmitter {
    * @property {string} [number] The number to send the message
    * @property {object[]} [embed] The MessageEmbed/s to send
    * @property {number[]} [max] The max character per question
-   * @property {(string|string[])} [question] The question/s to send
+   * @property {(string[])} [question] The question/s to send
    */
 
   constructor({ client, chat, time, number, embed, max, question }) {
@@ -1634,7 +1634,7 @@ exports.Collector = class Collector extends EventEmitter {
       throw new TypeError("You must pass a valid number");
     }
     if (typeof this.max !== "number") return tError("Max must be a number.");
-    if (typeof this.question !== "string" && typeof this.question !== "object")
+    if (typeof this.question !== "object")
       return tError("Question must be a string or an object.");
 
     let i = 0;
