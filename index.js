@@ -1605,6 +1605,8 @@ exports.Collector = class Collector extends EventEmitter {
 
     let message = await awaitMessage(client, time, chat);
 
+    console.log(`[LOG]: ${message}`);
+
     if (message) {
       this.emit("message", message);
       return this;
