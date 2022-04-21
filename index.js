@@ -1588,6 +1588,7 @@ exports.Collector = class Collector extends EventEmitter {
    */
 
   constructor(client, chat, time, number, embed, max, question) {
+    super();
     this.client = client;
     this.chat = chat;
     this.time = time;
