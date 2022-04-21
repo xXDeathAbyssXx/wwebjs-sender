@@ -1,3 +1,6 @@
+const { Buttons } = require("whatsapp-web.js");
+const isPhone = require("is-phone");
+
 exports.awaitMessage = async function (client, timeout = time, from = null) {
   return new Promise((resolve) => {
     client.on("message_create", (message) => {
