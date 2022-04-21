@@ -1,7 +1,7 @@
 const { Buttons } = require("whatsapp-web.js");
 const isPhone = require("is-phone");
 const Util = require("./util/Util");
-const { awaitMessage } = require("./util/functions");
+const { awaitMessage, eesend } = require("./util/functions");
 const EventEmitter = require("events");
 
 /**
@@ -1687,7 +1687,11 @@ exports.Collector = class Collector extends EventEmitter {
     while (this.embed[i]) {
       let moremax = this.max[i] + 1;
 
-      await this.client.sendMessage(this.number, this.embed[i]);
+      await eesend({
+        client: this.client,
+        number: this.number,
+        embed: this.embed[i],
+      });
 
       let array = await awaitMessage(this.client, this.time, this.number);
 
