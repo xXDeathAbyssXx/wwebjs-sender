@@ -1603,14 +1603,11 @@ exports.Collector = class Collector extends EventEmitter {
     let chat = this.chat;
     let time = this.time;
 
-    let message = await awaitMessage(client, time, chat);
-
-    console.log(message);
-
-    if (message) {
+    await awaitMessage(client, time, chat).then((message) => {
       this.emit("message", message);
+      console.log(`[LOG TEMP]: Already emitted and now in return`);
       return this;
-    }
+    });
   }
 
   async messageQuestionCollcetor() {
