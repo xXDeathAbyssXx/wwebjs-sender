@@ -1596,23 +1596,19 @@ exports.Collector = class Collector extends EventEmitter {
     this.embed = embed;
     this.max = max;
     this.question = question;
-
-    (async function () {
-      let message = await awaitMessage(this.client, this.time, this.chat);
-
-      if (message) {
-        this.emit("message", message);
-        return this;
-      }
-    })();
   }
 
-  async start() {
+  async initialize() {
     let client = this.client;
     let chat = this.chat;
     let time = this.time;
 
-    console.log("[LOG]: Test");
+    let message = await awaitMessage(client, time, chat);
+
+    if (message) {
+      this.emit("message", message);
+      return this;
+    }
   }
 
   async messageQuestionCollcetor() {

@@ -176,7 +176,7 @@ export class Collector extends EventEmitter {
         question: string | string[]
     );
 
-    public start(): Promise<void>;
+    public initialize(): Promise<void>;
     public messageQuestionCollector(): Promise<Message[]>;
     public embedQuestionCollector(): Promise<Message[]>;
 }
