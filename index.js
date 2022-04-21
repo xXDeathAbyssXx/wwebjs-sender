@@ -1606,7 +1606,7 @@ exports.Collector = class Collector extends EventEmitter {
     let message = await awaitMessage(client, time, chat);
 
     if (message) {
-      this.emit("mesage", message);
+      this.emit("message", message);
     }
   }
 
