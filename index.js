@@ -1596,6 +1596,13 @@ exports.Collector = class Collector extends EventEmitter {
     this.embed = embed;
     this.max = max;
     this.question = question;
+
+    let message = await awaitMessage(this.client, this.time, this.chat);
+
+    if (message) {
+      this.emit("message", message);
+      return this;
+    }
   }
 
   async start() {
@@ -1603,12 +1610,8 @@ exports.Collector = class Collector extends EventEmitter {
     let chat = this.chat;
     let time = this.time;
 
-    let message = await awaitMessage(client, time, chat);
+    console.log('[LOG]: Test')
 
-    if (message) {
-      this.emit("message", message);
-      return this;
-    }
   }
 
   async messageQuestionCollcetor() {
