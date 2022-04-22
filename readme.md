@@ -119,6 +119,7 @@ yarn remove whatsapp-web.js && yarn add whatsapp-web.js
 - Create buttons in an easy way
 - Reply to messages with embed
 - Send messages to a number with embeds and buttons at the same time in an easy way
+- Collect messages by event handler, collect answers of message and embed collectors
 
 ---
 
