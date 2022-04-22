@@ -122,7 +122,7 @@ yarn remove whatsapp-web.js && yarn add whatsapp-web.js
 
 ---
 
-## 👀 Example usage:
+## 👀 Example of embed and button usage:
 
 ```js
 const WwebjsSender = require("@deathabyss/wwebjs-sender");
@@ -174,11 +174,74 @@ client.on("message", (msg) => {
 client.initialize();
 ```
 
-## 👀 Example Result:
+## 👀 Example of embed and button usage result:
 
 <div align="center">
 <img height="400vh" src="https://i.imgur.com/zuvJ5iR.jpeg">
 </div>
+
+## 👀 Example of collector usage:
+
+```js
+const WwebjsSender = require("@deathabyss/wwebjs-sender");
+const { Client } = require("whatsapp-web.js");
+
+const client = new Client();
+
+client.on("qr", (qr) => {
+  console.log("QR RECEIVED", qr);
+});
+
+client.on("ready", () => {
+  console.log("Client is ready!");
+});
+
+client.on("message", async (msg) => {
+  if (msg.body == "!command") {
+    const { from } = msg;
+    const chat = await msg.getChat();
+
+    let someEmbed = new WwebjsSender.MessageEmbed()
+      .setTitle(`1️⃣ | What is your name?`)
+      .setDescription(`Please, type your name.`)
+      .setFooter(`Question!`)
+      .setTimestamp()
+      .sizeEmbed(24);
+
+    let AnotherEmbed = new WwebjsSender.MessageEmbed()
+      .setTitle(`2️⃣ | What is your age?`)
+      .setDescription(`Please, type your age.`)
+      .setFooter(`Question!`)
+      .setTimestamp()
+      .sizeEmbed(24);
+
+    let collect = new WwebjsSender.Collector({
+      client: client,
+      chat: chat,
+      time: 10000,
+      number: from,
+      max: [20, 3],
+      question: ["What is your name?", "What is your age?"],
+      embed: [someEmbed, AnotherEmbed],
+    });
+
+    collect.on("message", async (msg) => {
+      let body = msg.body;
+      console.log(body);
+    });
+
+    await collect.initialize();
+
+    let resultMessageQuestion = await collect.messageQuestionCollcetor();
+
+    let resultEmbedQuestion = await collect.embedQuestionCollector();
+
+    console.log(resultMessageQuestion, resultEmbedQuestion);
+  }
+});
+
+client.initialize();
+```
 
 ---
 
@@ -225,6 +288,42 @@ send({
 });
 ```
 
+### `Collector`
+
+```js
+let collect = new Collector({
+  client: client, //The client of the bot [required]
+  chat: chat, //The chat to send the message [required]
+  time: time, //The time to wait for the answer [required]
+  number: number, //The number to send the message [required]
+  max: [number, number2], //The max characters per question [optional]
+  question: [string, string2], //The question/s to ask [optional]
+  embed: [embed, embed2], //The embed/s to send [optional]
+});
+```
+
+### `Collect Message Event`
+
+```js
+collect.on("message", async (msg) => {
+  let body = msg.body; //The body of the message received
+});
+
+await collect.initialize(); //Initialize the collector [required]
+```
+
+### `Collect Message Question/s`
+
+```js
+let resultMessageQuestion = await collect.messageQuestionCollcetor(); //Get the message answer/s [required]
+```
+
+### `Collect Embed Question/s`
+
+```js
+let resultEmbedQuestion = await collect.embedQuestionCollector(); //Get the embed answer/s [required]
+```
+
 ---
 
 ## 📁 Contributing
@@ -252,10 +351,13 @@ send({
 <table>
   <tr>
     <td align="center"><a href="https://github.com/xXDeathAbyssXx"><img src="https://i.imgur.com/B2xcm3E.gif" width="100px;"/><br /><sub><b>DeathAbyss</b></sub></a><br /><a href="https://github.com/xXDeathAbyssXx" title="Code">💻</a> <a title="Design">🎨</a> <a title="Tests">🧪</a> <a title="Ideas, Planning, & Feedback">🤔</a></td>
+     <td align="center"><a href="https://github.com/leonardobagi"><img src="https://avatars.githubusercontent.com/u/65085761?v=4" width="100px;"/><br /><sub><b>Leonardo Bagi</b></sub></a><br /><a href="https://github.com/leonardobagi" title="Code">💻</a> <a title="Tests">🧪</a> <a title="Checks">🧾</a> </td>
   </tr>
 </table>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ---
