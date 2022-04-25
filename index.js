@@ -500,7 +500,7 @@ exports.MessageButton = class MessageButton {
    */
   setCustomId(id) {
     if (typeof id === "string") {
-      id_btn = id;
+      this.id_btn = id;
     } else {
       throw new TypeError("MessageButton id must be a string.");
     }
@@ -515,7 +515,7 @@ exports.MessageButton = class MessageButton {
    */
   setLabel(label) {
     if (typeof label === "string") {
-      label_btn = label;
+      this.label_btn = label;
     } else {
       throw new TypeError("MessageButton label must be a string.");
     }
