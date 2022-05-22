@@ -209,7 +209,7 @@ client.on("message", async (msg) => {
       .setTimestamp()
       .sizeEmbed(24);
 
-    let AnotherEmbed = new WwebjsSender.MessageEmbed()
+    let anotherEmbed = new WwebjsSender.MessageEmbed()
       .setTitle(`2️⃣ | What is your age?`)
       .setDescription(`Please, type your age.`)
       .setFooter(`Question!`)
@@ -223,7 +223,7 @@ client.on("message", async (msg) => {
       number: from,
       max: [20, 3],
       question: ["What is your name?", "What is your age?"],
-      embed: [someEmbed, AnotherEmbed],
+      embed: [someEmbed, anotherEmbed],
     });
 
     collect.on("message", async (msg) => {

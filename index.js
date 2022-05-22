@@ -111,7 +111,7 @@ exports.MessageEmbed = class MessageEmbed {
    */
 
   sizeEmbed(px) {
-    if (px == undefined) {
+    if (!typeof px === "number" && px === undefined) {
       let nopx = {
         char: null,
         line: null,
