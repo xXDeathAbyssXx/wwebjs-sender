@@ -1,5 +1,4 @@
 const { Buttons } = require("whatsapp-web.js");
-const isPhone = require("is-phone");
 const Util = require("./util/Util");
 const { awaitMessage, eesend } = require("./util/functions");
 const EventEmitter = require("events");
@@ -879,11 +878,7 @@ exports.send = function ({ client, number, embed, button }) {
       let checkisreal = number.split("@");
       let checknumber = checkisreal[0];
       let checkid = checkisreal[1];
-      let checknumbernpm = isPhone(checknumber);
-      if (checknumbernpm === false) {
-        throw new TypeError("You must pass a valid number");
-      }
-      if (!(checkid === "c.us")) {
+      if (!(checkid === "c.us" || checkid === "g.us")) {
         throw new TypeError("You must pass a valid number");
       }
       if (button === null || button === undefined || button.length === 0) {
@@ -1628,11 +1623,7 @@ exports.Collector = class Collector extends EventEmitter {
     let checkisreal = this.number.split("@");
     let checknumber = checkisreal[0];
     let checkid = checkisreal[1];
-    let checknumbernpm = isPhone(checknumber);
-    if (checknumbernpm === false) {
-      throw new TypeError("You must pass a valid number");
-    }
-    if (!(checkid === "c.us")) {
+    if (!(checkid === "c.us" || checkid === "g.us")) {
       throw new TypeError("You must pass a valid number");
     }
     if (!Array.isArray(this.max)) return tError("Max must be an array.");
@@ -1725,11 +1716,7 @@ exports.Collector = class Collector extends EventEmitter {
     let checkisreal = this.number.split("@");
     let checknumber = checkisreal[0];
     let checkid = checkisreal[1];
-    let checknumbernpm = isPhone(checknumber);
-    if (checknumbernpm === false) {
-      throw new TypeError("You must pass a valid number");
-    }
-    if (!(checkid === "c.us")) {
+    if (!(checkid === "c.us" || checkid === "g.us")) {
       throw new TypeError("You must pass a valid number");
     }
 
