@@ -110,15 +110,13 @@ exports.MessageEmbed = class MessageEmbed {
    */
 
   sizeEmbed(px) {
-    if (typeof px === undefined) {
+    if (!typeof px === "number" && px === undefined) {
       let nopx = {
         char: null,
         line: null,
       };
       this.px = nopx;
       return this;
-    } else if (!(isNaN(px) || px < 0)) {
-      throw new eError("px must be a number");
     }
     let embedsize;
     let line_convert;
