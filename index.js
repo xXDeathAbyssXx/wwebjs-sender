@@ -117,7 +117,7 @@ exports.MessageEmbed = class MessageEmbed {
       };
       this.px = nopx;
       return this;
-    } else if (!(typeof px === "number")) {
+    } else if (!(isNaN(px) || px < 0)) {
       throw new eError("px must be a number");
     }
     let embedsize;
