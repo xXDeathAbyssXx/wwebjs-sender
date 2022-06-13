@@ -1797,7 +1797,6 @@ exports.Collector = class Collector extends EventEmitter {
             result_array = shsx5;
           }
         }
-
         arraytoresult.push(result_array);
       }
       i++;

@@ -203,18 +203,18 @@ client.on("message", async (msg) => {
     const chat = await msg.getChat();
 
     let someEmbed = new WwebjsSender.MessageEmbed()
+      .sizeEmbed(24)
       .setTitle(`1️⃣ | What is your name?`)
       .setDescription(`Please, type your name.`)
       .setFooter(`Question!`)
-      .setTimestamp()
-      .sizeEmbed(24);
+      .setTimestamp();
 
     let anotherEmbed = new WwebjsSender.MessageEmbed()
+      .sizeEmbed(24)
       .setTitle(`2️⃣ | What is your age?`)
       .setDescription(`Please, type your age.`)
       .setFooter(`Question!`)
-      .setTimestamp()
-      .sizeEmbed(24);
+      .setTimestamp();
 
     let collect = new WwebjsSender.Collector({
       client: client,
