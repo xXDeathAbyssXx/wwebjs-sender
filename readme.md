@@ -1,6 +1,6 @@
 <div align="center">
 
-[![Npm package version](https://badgen.net/npm/v/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![Npm package weekly downloads](https://badgen.net/npm/dw/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![GitHub stars](https://img.shields.io/github/stars/xXDeathAbyssXx/wwebjs-sender.svg)](https://github.com/xXDeathAbyssXx/wwebjs-sender/watchers)
+[![Npm package version](https://badgen.net/npm/v/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![Npm package weekly downloads](https://badgen.net/npm/dw/@deathabyss/wwebjs-sender)](https://www.npmjs.com/package/@deathabyss/wwebjs-sender) [![GitHub stars](https://img.shields.io/github/stars/xXDeathAbyssXx/wwebjs-sender.svg)](https://github.com/xXDeathAbyssXx/wwebjs-sender/watchers) [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 </div>
 
