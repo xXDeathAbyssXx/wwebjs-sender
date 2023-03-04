@@ -174,8 +174,8 @@ exports.MessageEmbed = class MessageEmbed {
     let wall = "│";
     let space = " ";
     let size_embed = this.px;
-    if (!(size_embed.char === null || size_embed.line === null)) {
-      max = size_embed.char;
+    if (size_embed !== null) {
+      max = size_embed.char ?? max;
     }
     let moremax = max + 1;
 
@@ -336,10 +336,9 @@ exports.MessageEmbed = class MessageEmbed {
     let wall = "│";
     let space = " ";
     let size_embed = this.px;
-    if (!(size_embed.char === null || size_embed.line === null)) {
-      max = size_embed.char;
+    if (size_embed !== null) {
+      max = size_embed.char ?? max;
     }
-
     let moremax = max + 1;
 
     if (typeof title === "string") {
