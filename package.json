@@ -1,6 +1,6 @@
 {
   "name": "@deathabyss/wwebjs-sender",
-  "version": "1.93.1",
+  "version": "1.93.2",
   "description": "A package to send messages/buttons using constructors with the whatsapp-web.js package",
   "keywords": [
     "sender",
