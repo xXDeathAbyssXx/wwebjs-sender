@@ -231,7 +231,7 @@ client.on("message", async (msg) => {
       console.log(body);
     });
 
-    await collect.initialize();
+    collect.initialize();
 
     let resultMessageQuestion = await collect.messageQuestionCollcetor();
 
